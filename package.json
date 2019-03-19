@@ -1,7 +1,7 @@
 {
     "name": "smart-publisher",
     "version": "0.2.0",
-    "author": "Evgeniy Kovrov",
+    "author": "Evgeniy Kovrov <evgeniy@nyxene.com>",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -15,7 +15,7 @@
     ],
     "scripts": {
         "start": "react-scripts start",
-        "build": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
+        "build": "cross-env react-scripts build",
         "test": "react-scripts test",
         "server": "cross-env nodemon ./server/app.js",
         "server:test": "jest ./server/"

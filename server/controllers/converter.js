@@ -1,4 +1,4 @@
-const MAIN_TEXT_MAX_LENGTH = 2100;
+const MAIN_TEXT_MAX_LENGTH = 2200;
 const OTHER_TEXT_MAX_LENGTH = 560;
 const ERROR_MESSAGE = 'Not a string';
 

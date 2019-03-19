@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { Tab, Tabs } from '../../components/Tabs';
+import { Button, Tab, Tabs, PostField, Toolbar, Counter } from '../../components';
+import { useDebounce } from '../../hooks';
 
 interface Result {
     mainText: string;
@@ -8,11 +9,13 @@ interface Result {
 }
 
 const Converter = (): JSX.Element => {
-
     const [activeTabId, setActiveTabId] = useState<string>('config');
     const [disabledResult, setDisabledResult] = useState<boolean>(true);
-    const [postField, setPostField] = useState<string>('');
+    const [post, setPost] = useState<string>('');
+    const [postLength, setPostLength] = useState<number>(0);
     const [result, setResult] = useState<Result>({ mainText: '', otherText: [] });
+
+    const debouncedPostLength = useDebounce<number>(postLength, 200);
 
     return (
         <div>
@@ -24,20 +27,29 @@ const Converter = (): JSX.Element => {
                     tabId="config"
                     label="Config"
                 >
-                    <div>
-                        <textarea
-                            value={postField}
-                            onChange={e => setPostField(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <button
-                            type="button"
-                            onClick={onConvertPost}
-                        >
-                            Send
-                        </button>
-                    </div>
+                    <PostField
+                        post={post}
+                        onPostChange={handlerTextChange}
+                    />
+                    <Toolbar
+                        items={[
+                            <Button
+                                type="button"
+                                disabled={!post}
+                                onClick={onConvertPost}
+                            >
+                                Convert
+                            </Button>,
+                            <Button
+                                type="reset"
+                                disabled={!post}
+                                onClick={onClearPost}
+                            >
+                                Clear
+                            </Button>,
+                            <Counter length={debouncedPostLength} />
+                        ]}
+                    />
                 </Tab>
                 <Tab
                     tabId="result"
@@ -57,24 +69,42 @@ const Converter = (): JSX.Element => {
         </div>
     );
 
+    function handlerTextChange(value: string): void {
+        setPost(value);
+        setPostLength(value.length);
+    }
+
     function onConvertPost(): void {
+        if (!postLength) {
+            return;
+        }
+
         setDisabledResult(true);
-        setActiveTabId('result');
 
         fetch('http://localhost:3000/api/v1/converter', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                post: postField,
-            }),
+                post: post
+            })
         })
             .then(result => result.json())
             .then(result => {
+                setActiveTabId('result');
                 setDisabledResult(false);
                 setResult(result);
+            })
+            .catch(e => {
+                setDisabledResult(true);
+                new Error(e);
             });
+    }
+
+    function onClearPost(): void {
+        setPost('');
+        setPostLength(0);
     }
 };
 

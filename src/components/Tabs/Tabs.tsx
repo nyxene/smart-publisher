@@ -17,7 +17,7 @@ export interface TabProps {
 }
 
 const TabContent = styled.div`
-    padding: 16px 24px;
+    padding: 1em 1.5em;
 `;
 
 const Tabs = ({ activeTabId, onChangeTab, children }: TabsProps): JSX.Element => {
