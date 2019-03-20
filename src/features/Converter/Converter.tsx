@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
-import { Button, Tab, Tabs, PostField, Toolbar, Counter } from '../../components';
-import { useDebounce } from '../../hooks';
+import { Button } from '../../components/Button';
+import { Counter } from '../../components/Counter';
+import { PostField } from '../../components/PostField';
+import { Tab, Tabs } from '../../components/Tabs';
+import { FillValue, Toolbar } from '../../components/Toolbar';
+import { useDebounce } from '../../hooks/useDebounce';
 
 interface Result {
     mainText: string;
     otherText: string[] | [];
 }
+
+const CounterWrapper = styled.div`
+    text-align: right;
+`;
 
 const Converter = (): JSX.Element => {
     const [activeTabId, setActiveTabId] = useState<string>('config');
@@ -32,6 +41,7 @@ const Converter = (): JSX.Element => {
                         onPostChange={handlerTextChange}
                     />
                     <Toolbar
+                        fill={FillValue.last}
                         items={[
                             <Button
                                 type="button"
@@ -47,7 +57,9 @@ const Converter = (): JSX.Element => {
                             >
                                 Clear
                             </Button>,
-                            <Counter length={debouncedPostLength} />
+                            <CounterWrapper>
+                                <Counter length={debouncedPostLength}/>
+                            </CounterWrapper>
                         ]}
                     />
                 </Tab>

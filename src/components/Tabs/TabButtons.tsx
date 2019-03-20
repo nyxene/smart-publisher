@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { TabProps } from './Tabs';
 
 interface TabButtonsProps {
-    tabs: [];
+    tabs: TabProps[];
     activeTabId: string;
     onChangeTab: (tabId: string) => void;
 }

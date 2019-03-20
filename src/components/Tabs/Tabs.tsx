@@ -21,7 +21,7 @@ const TabContent = styled.div`
 `;
 
 const Tabs = ({ activeTabId, onChangeTab, children }: TabsProps): JSX.Element => {
-    let tabProps: any = []; // TODO Research
+    let tabProps: TabProps[] = [];
 
     const content = Children.map(children, child => {
         if (child.type === Tab) {
