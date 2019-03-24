@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
         width: 100%;
         height: 100%;
         font-size: 16px;
-        font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     }
 `;
 

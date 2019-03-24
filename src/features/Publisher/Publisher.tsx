@@ -7,7 +7,6 @@ import { PostField } from '../../components/PostField';
 import { Tab, Tabs } from '../../components/Tabs';
 import { FillValue, Toolbar } from '../../components/Toolbar';
 import { useDebounce } from '../../hooks/useDebounce';
-import Converter from '../../services/Converter';
 
 interface Result {
     post: string;
@@ -101,41 +100,36 @@ const Publisher = (): JSX.Element => {
         debugger;
         setDisabledResult(true);
 
-        try {
-            const converter: Converter = new Converter({
-                textColor: '#514253',
-                bgColor: '#f4eae8'
+        fetch('http://localhost:3000/api/v1/converter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                post: post,
+                options: {
+                    textColor: '#514253',
+                    bgColor: '#f4eae8'
+                }
+            })
+        })
+            .then(result => {
+                if (result.status >= 400) {
+                    result.json().then((err: { errors: string }) => {
+                        throw new Error(err.errors);
+                    });
+                }
+                return result.json();
+            })
+            .then(result => {
+                setActiveTabId('result');
+                setDisabledResult(false);
+                setResult(result);
+            })
+            .catch(e => {
+                setDisabledResult(true);
+                new Error(e);
             });
-            const result: Result = converter.run(post);
-
-            setActiveTabId('result');
-            setDisabledResult(false);
-            setResult(result);
-        } catch (e) {
-            setDisabledResult(true);
-            new Error(e);
-        }
-
-
-        // fetch('http://localhost:3000/api/v1/converter', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         post: post
-        //     })
-        // })
-        //     .then(result => result.json())
-        //     .then(result => {
-        //         setActiveTabId('result');
-        //         setDisabledResult(false);
-        //         setResult(result);
-        //     })
-        //     .catch(e => {
-        //         setDisabledResult(true);
-        //         new Error(e);
-        //     });
     }
 
     function onClearPost(): void {

@@ -5,7 +5,7 @@ const Button = styled.button`
     padding: 0 20px;
     min-width: 8em;
     height: 36px;
-    font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     font-size: .75em;
     font-weight: 600;
     text-transform: uppercase;

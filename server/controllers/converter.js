@@ -1,6 +1,7 @@
 const TextToPng = require('../controllers/textToPng');
 
 const POST_MAX_LENGTH = 2200;
+const COLOR_PATTERN = '^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$';
 
 class Converter {
     constructor({
@@ -14,18 +15,20 @@ class Converter {
     }
 
     run(originalPost) {
-        try {
-            const { post, otherText } = this.preparePost(originalPost);
-            const t2p = new TextToPng({
-                textColor: this.textColor,
-                bgColor: this.bgColor
-            });
-            const images = t2p.render(otherText);
+        const { post, otherText } = this.preparePost(originalPost);
+        const options = {
+            textColor: this.textColor,
+            bgColor: this.bgColor
+        };
 
-            return { post, images };
-        } catch (e) {
-            throw new Error(e);
+        let images = [];
+
+        if (!!otherText) {
+            const t2p = new TextToPng(options);
+            images = t2p.render(otherText);
         }
+
+        return { post, images };
     }
 
     preparePost(originalPost) {
@@ -42,4 +45,26 @@ class Converter {
     }
 }
 
-module.exports = Converter;
+function validateOptions(options) {
+    return Object.keys(options).reduce((result, key) => {
+        if (key === 'textColor' || key === 'bgColor') {
+            const isValid = _validateColor(options[key]);
+
+            if (!isValid) {
+                result.hasError = true;
+                result.errorsField.push(key);
+            }
+        }
+
+        return result;
+    }, { hasError: false, errorsField: [] });
+}
+
+function _validateColor(color) {
+    return new RegExp(COLOR_PATTERN).test(color);
+}
+
+module.exports = {
+    Converter,
+    validateOptions
+};

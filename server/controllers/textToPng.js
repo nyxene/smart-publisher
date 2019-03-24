@@ -14,7 +14,7 @@ const TEXT_ALIGN = Object.freeze({
 const SIZE = 2048;
 const FONT_SIZE = SIZE / 25;
 const LINE_HEIGHT = FONT_SIZE * 1.4;
-const FONT_FAMILY = 'sans-serif';
+const FONT_FAMILY = 'Helvetica Neue, Helvetica, Arial, sans-serif';
 const FONT_DEFAULT = `normal ${FONT_SIZE}px ${FONT_FAMILY}`;
 
 const MAX_LINE = 16;
@@ -47,7 +47,7 @@ class TextToPng {
 
         // TODO Think of a more effective solution
         return textBlocks.map(textBlock => {
-            const canvas = createCanvas(SIZE, textBlocks.height + this.padding * 2);
+            const canvas = createCanvas(SIZE, SIZE);
             const ctx = canvas.getContext('2d');
             let textY = 0;
 
