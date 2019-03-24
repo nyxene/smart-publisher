@@ -1,10 +1,25 @@
-const TextToPng = require('../controllers/textToPng');
+import TextToPng from './textToPng';
 
-const POST_MAX_LENGTH = 2200;
+interface ConverterProps {
+    postMaxLength?: number;
+    textColor?: string;
+    bgColor?: string;
+}
 
-class Converter {
+interface ConverterResult {
+    post: string;
+    images: string[];
+}
+
+const POST_MAX_LENGTH: number = 22;
+
+export default class Converter implements ConverterProps {
+    readonly postMaxLength: number;
+    readonly textColor: string;
+    readonly bgColor: string;
+
     constructor({
-        postMaxLength: postMaxLength = POST_MAX_LENGTH,
+        postMaxLength = POST_MAX_LENGTH,
         textColor = '',
         bgColor = ''
     } = {}) {
@@ -13,14 +28,20 @@ class Converter {
         this.bgColor = bgColor;
     }
 
-    run(originalPost) {
+    public run(originalPost: string): ConverterResult {
         try {
             const { post, otherText } = this.preparePost(originalPost);
-            const t2p = new TextToPng({
+
+            const t2p: TextToPng = new TextToPng({
                 textColor: this.textColor,
                 bgColor: this.bgColor
             });
-            const images = t2p.render(otherText);
+
+            let images: string[] = [];
+
+            if (!!otherText) {
+                images = t2p.render(otherText);
+            }
 
             return { post, images };
         } catch (e) {
@@ -28,12 +49,12 @@ class Converter {
         }
     }
 
-    preparePost(originalPost) {
+    private preparePost(originalPost: string) {
         if (!originalPost || typeof originalPost !== 'string') {
             throw new Error('Error when prepare post. Post is empty or not string');
         }
 
-        const post = originalPost.trim();
+        const post = originalPost.trim().replace(/ ,/g, ', ');
 
         return {
             post: post.substring(0, this.postMaxLength),
@@ -41,5 +62,3 @@ class Converter {
         };
     }
 }
-
-module.exports = Converter;

@@ -11,7 +11,7 @@ logger.info('🤞 Initializing server');
 const server = restify.createServer({
     name: SERVER_NAME,
     version: API_VERSION,
-    log: logger,
+    log: logger
 });
 
 middleware(server);

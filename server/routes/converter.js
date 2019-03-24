@@ -5,8 +5,8 @@ const Converter = require('../controllers/converter');
 const converterHandler = (req, res, next) => {
     const post = req.body.post;
 
-    const c = new Converter({post, mainTextMaxLength: 1704, otherTextMaxLength: 560});
-    const result = c.preparePost();
+    const c = new Converter();
+    const result = c.run(post);
 
     res.send(200, result);
     return next();

@@ -9,19 +9,19 @@ const log = moduleName =>
         streams: [
             {
                 level: LOG_LEVEL,
-                stream: process.stdout,
-            },
+                stream: process.stdout
+            }
             // {
             //     level: LOG_LEVEL,
             //     type: 'rotating-file', // WARN for cluster: https://github.com/trentm/node-bunyan#stream-type-rotating-file
             //     path: `/logs/${moduleName}.log`,
             //     period: '1d',
-            //     count: 3,
+            //     count: 3
             // },
-        ],
+        ]
     });
 
 module.exports = {
     basePath,
-    log,
+    log
 };

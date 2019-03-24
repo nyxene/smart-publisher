@@ -13,5 +13,5 @@ module.exports = {
     API_VERSION,
     LOG_LEVEL,
     PORT,
-    SERVER_NAME,
+    SERVER_NAME
 };

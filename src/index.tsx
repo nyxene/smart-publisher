@@ -2,9 +2,9 @@ import React from 'react';
 import { render } from 'react-dom';
 import { createGlobalStyle } from 'styled-components';
 
-// import * as serviceWorker from './serviceWorker';
-import App from './App';
 import { resetStyle } from './components/ResetStyle';
+import App from './features/App/App';
+// import * as serviceWorker from './serviceWorker';
 
 const GlobalStyle = createGlobalStyle`
     ${resetStyle};
@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
         width: 100%;
         height: 100%;
         font-size: 16px;
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif;
     }
 `;
 

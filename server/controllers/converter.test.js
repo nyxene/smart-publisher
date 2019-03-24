@@ -3,7 +3,7 @@ const Converter = require('./converter');
 let converter;
 let prepare;
 
-describe('Converter', () => {
+describe('Publisher', () => {
 
     describe('when sending post is less than maxLength', () => {
         beforeAll(() => {
@@ -52,14 +52,14 @@ describe('Converter', () => {
 
     describe.each([
         ['some object', {}],
-        ['some array', []],
+        ['some array', []]
     ])('when sending post %s', (message, post) => {
             it('should return error', () => {
                 converter = new Converter({ post });
 
                 expect(() => converter.preparePost()).toThrow();
             });
-        },
+        }
     );
 
 });
