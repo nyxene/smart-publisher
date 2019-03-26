@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Button } from '../../components/Button';
-import { Counter } from '../../components/Counter';
-import { PostField } from '../../components/PostField';
-import { Tab, Tabs } from '../../components/Tabs';
-import { FillValue, Toolbar } from '../../components/Toolbar';
+import { Button, Counter, FILL_VALUE, PostField, Tab, Tabs, Toolbar } from '../../components';
 import { useDebounce } from '../../hooks/useDebounce';
 
-interface Result {
-    post: string;
-    images: string[];
-}
+const PublisherStyled = styled.div`
+`;
 
 const CounterWrapper = styled.div`
     text-align: right;
@@ -20,14 +14,15 @@ const CounterWrapper = styled.div`
 const Publisher = (): JSX.Element => {
     const [activeTabId, setActiveTabId] = useState<string>('config');
     const [disabledResult, setDisabledResult] = useState<boolean>(true);
+
     const [post, setPost] = useState<string>('');
     const [postLength, setPostLength] = useState<number>(0);
-    const [result, setResult] = useState<Result>({ post: '', images: [] });
+    const [covers, setCovers] = useState<string[]>([]);
 
     const debouncedPostLength = useDebounce<number>(postLength, 200);
 
     return (
-        <div>
+        <PublisherStyled>
             <Tabs
                 activeTabId={activeTabId}
                 onChangeTab={setActiveTabId}
@@ -41,7 +36,7 @@ const Publisher = (): JSX.Element => {
                         onPostChange={handlerTextChange}
                     />
                     <Toolbar
-                        fill={FillValue.last}
+                        fill={FILL_VALUE.last}
                         items={[
                             <Button
                                 type="button"
@@ -68,36 +63,62 @@ const Publisher = (): JSX.Element => {
                     label="Result"
                     disabled={disabledResult}
                 >
-                    <div>
-                        <p>Main text:</p>
-                        <div>{result.post}</div>
-                    </div>
-                    <div>
-                        <p>Other text:</p>
-                        <div>
-                            {
-                                result.images.map((dataUrl: string, index: number) => (
-                                    <img key={index} srcSet={dataUrl} alt="image post" />
-                                ))
-                            }
-                        </div>
-                    </div>
+                    <PostField
+                        post={post}
+                        onPostChange={handlerTextChange}
+                    />
+                    <Toolbar
+                        fill={FILL_VALUE.last}
+                        items={[
+                            <Button
+                                type="button"
+                                onClick={onCopyPost}
+                            >
+                                Copy
+                            </Button>,
+                            <CounterWrapper>
+                                <Counter length={debouncedPostLength} />
+                            </CounterWrapper>
+                        ]}
+                    />
+                    {covers.map((dataUrl: string, index: number) => (
+                        <img
+                            key={index}
+                            srcSet={dataUrl}
+                            alt={`Post cover ${index + 1}`}
+                        />
+                    ))}
                 </Tab>
             </Tabs>
-        </div>
+        </PublisherStyled>
     );
 
+    function updatePost(data: {
+        post: string,
+        covers?: string[]
+    }) {
+        setPost(data.post);
+        setPostLength(data.post.length);
+        data.covers && setCovers(data.covers);
+    }
 
     function handlerTextChange(value: string): void {
-        setPost(value);
-        setPostLength(value.length);
+        updatePost({ post: value });
     }
 
     function onConvertPost(): void {
+
+        setActiveTabId('result');
+        setDisabledResult(false);
+
+        const p = post.substring(0, 20);
+        updatePost({ post: p });
+        return;
+
         if (!postLength) {
             return;
         }
-        debugger;
+
         setDisabledResult(true);
 
         fetch('http://localhost:3000/api/v1/converter', {
@@ -114,17 +135,24 @@ const Publisher = (): JSX.Element => {
             })
         })
             .then(result => {
-                if (result.status >= 400) {
-                    result.json().then((err: { errors: string }) => {
-                        throw new Error(err.errors);
-                    });
+                try {
+                    if (result.status >= 400) {
+                        return result.json().then((err: { errors: string }) => {
+                            throw new Error(err.errors);
+                        });
+                    }
+                    return result.json();
+                } catch (e) {
+                    throw new Error(e);
                 }
-                return result.json();
             })
             .then(result => {
                 setActiveTabId('result');
                 setDisabledResult(false);
-                setResult(result);
+                updatePost({
+                    post: result.post,
+                    covers: result.covers
+                });
             })
             .catch(e => {
                 setDisabledResult(true);
@@ -135,6 +163,15 @@ const Publisher = (): JSX.Element => {
     function onClearPost(): void {
         setPost('');
         setPostLength(0);
+    }
+
+    function onCopyPost(): void {
+        const textField = document.createElement('textarea');
+        textField.innerText = post;
+        document.body.appendChild(textField);
+        textField.select();
+        document.execCommand('copy');
+        textField.remove();
     }
 };
 

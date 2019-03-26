@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface PostFieldProps {
     post: string;
-    onPostChange: (value: string) => void;
+    height?: string;
+    onPostChange?: (value: string) => void;
 }
 
-const PostFieldStyled = styled.div`
+const PostFieldStyled = styled.div<{ height: string | undefined }>`
+    height: 100%;
     background-color: #f5f5f5;
     
     textarea {
         padding: .5em 1em; 
         width: 100%;
-        min-height: 400px;
+        height: ${({ height }) => !!height ? height : '70vh'};
         resize: vertical;
 
         font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif;
@@ -35,13 +37,23 @@ const PostFieldStyled = styled.div`
     }
 `;
 
-const PostField = ({post, onPostChange}: PostFieldProps): JSX.Element => (
-    <PostFieldStyled>
-        <textarea
-            value={post}
-            onChange={e => onPostChange(e.target.value)}
-        />
-    </PostFieldStyled>
-);
+const PostField = ({ post = '', height, onPostChange }: PostFieldProps): JSX.Element => {
+    const [value, setValue] = useState<string>(post);
+
+    return (
+        <PostFieldStyled height={height}>
+            <textarea
+                value={value}
+                onChange={e => {
+                    setValue(e.target.value);
+                    if (onPostChange) {
+                        onPostChange(e.target.value);
+                    }
+
+                }}
+            />
+        </PostFieldStyled>
+    );
+};
 
 export default PostField;

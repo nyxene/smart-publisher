@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { createGlobalStyle } from 'styled-components';
 
-import { resetStyle } from './components/ResetStyle';
+import { resetStyle } from './components';
 import App from './features/App/App';
 // import * as serviceWorker from './serviceWorker';
 

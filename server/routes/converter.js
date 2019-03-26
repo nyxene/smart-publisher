@@ -8,9 +8,6 @@ const converterHandler = (req, res, next) => {
 
     const { hasError, errorsField } = validateOptions(options);
 
-    console.log('hasError', hasError);
-    console.log('errorsField', errorsField);
-
     if (hasError) {
         res.send(400, { errors: `This options no valid: ${errorsField.join(', ')}` });
         return next();

@@ -21,14 +21,14 @@ class Converter {
             bgColor: this.bgColor
         };
 
-        let images = [];
+        let covers = [];
 
         if (!!otherText) {
             const t2p = new TextToPng(options);
-            images = t2p.render(otherText);
+            covers = t2p.render(otherText);
         }
 
-        return { post, images };
+        return { post, covers };
     }
 
     preparePost(originalPost) {

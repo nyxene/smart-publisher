@@ -1,27 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 
-enum Align {
+enum ALIGN {
     start = 'flex-start',
     center = 'center',
     end = 'flex-end',
     fill = 'stretch'
 }
 
-export enum AlignItemsValue {
+export enum ALIGN_ITEMS_VALUE {
     start = 'start',
     center = 'center',
     end = 'end',
     fill = 'fill'
 }
 
-export enum FillValue {
+export enum FILL_VALUE {
     all = 'all',
     last = 'last',
     first = 'first'
 }
 
-enum JustifyContent {
+enum JUSTIFY_CONTENT {
     start = 'start',
     center = 'center',
     between = 'space-between;',
@@ -29,7 +29,7 @@ enum JustifyContent {
     evenly = 'space-evenly'
 }
 
-export enum JustifyContentValue {
+export enum JUSTIFY_CONTENT_VALUE {
     start = 'start',
     center = 'center',
     between = 'between',
@@ -38,9 +38,9 @@ export enum JustifyContentValue {
 }
 
 interface ToolbarBaseProps {
-    alignItems?: AlignItemsValue;
-    fill?: FillValue;
-    justifyContent?: JustifyContentValue;
+    alignItems?: ALIGN_ITEMS_VALUE;
+    fill?: FILL_VALUE;
+    justifyContent?: JUSTIFY_CONTENT_VALUE;
 }
 
 interface ToolbarProps extends ToolbarBaseProps {
@@ -58,20 +58,20 @@ export const ToolbarStyled = styled.div<ToolbarBaseProps>`
     flex-shrink: 1;
     flex-wrap: nowrap;
     flex-direction: ;
-    align-items: ${({ alignItems }) => Align[alignItems || AlignItemsValue.center]};
-    justify-content: ${({ justifyContent }) => JustifyContent[justifyContent || JustifyContentValue.start]};
+    align-items: ${({ alignItems }) => ALIGN[alignItems || ALIGN_ITEMS_VALUE.center]};
+    justify-content: ${({ justifyContent }) => JUSTIFY_CONTENT[justifyContent || JUSTIFY_CONTENT_VALUE.start]};
 
-    ${({ fill }) => fill === FillValue.all && `
+    ${({ fill }) => fill === FILL_VALUE.all && `
         ${ToolbarItem} {
             flex: 1 1;
         }
     `};
-    ${({ fill }) => fill === FillValue.last && `
+    ${({ fill }) => fill === FILL_VALUE.last && `
         ${ToolbarItem}:last-child {
             flex: 1 1;
         }
     `};
-    ${({ fill }) => fill === FillValue.first && `
+    ${({ fill }) => fill === FILL_VALUE.first && `
         ${ToolbarItem}:first-child {
             flex: 1 1;
         }

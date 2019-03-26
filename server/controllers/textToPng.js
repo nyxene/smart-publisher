@@ -17,7 +17,7 @@ const LINE_HEIGHT = FONT_SIZE * 1.4;
 const FONT_FAMILY = 'Helvetica Neue, Helvetica, Arial, sans-serif';
 const FONT_DEFAULT = `normal ${FONT_SIZE}px ${FONT_FAMILY}`;
 
-const MAX_LINE = 16;
+const MAX_LINE = 17;
 
 class TextToPng {
     constructor({
@@ -43,7 +43,7 @@ class TextToPng {
             throw new Error('Error when render text. Text is empty or not string');
         }
 
-        const textBlocks = this.getTextBlocks(text);
+        const textBlocks = TextToPng.getTextBlocks(text);
 
         // TODO Think of a more effective solution
         return textBlocks.map(textBlock => {
@@ -67,7 +67,7 @@ class TextToPng {
         });
     }
 
-    getTextBlocks(text) {
+    static getTextBlocks(text) {
         const canvas = createCanvas(SIZE, SIZE);
         const ctx = canvas.getContext('2d');
 
