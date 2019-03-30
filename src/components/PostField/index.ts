@@ -1,1 +1,1 @@
-export { default as PostField } from './PostField';
+export { PostField as default, usePostField } from './PostField';

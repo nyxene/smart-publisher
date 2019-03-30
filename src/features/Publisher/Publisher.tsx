@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Button, Counter, FILL_VALUE, PostField, Tab, Tabs, Toolbar } from '../../components';
+import { Button, Counter, FILL_VALUE, Toolbar } from '../../components';
 import { useDebounce } from '../../hooks/useDebounce';
+import { usePostField } from '../../components/PostField/';
 
 const PublisherStyled = styled.div`
 `;
@@ -12,114 +13,88 @@ const CounterWrapper = styled.div`
 `;
 
 const Publisher = (): JSX.Element => {
-    const [activeTabId, setActiveTabId] = useState<string>('config');
-    const [disabledResult, setDisabledResult] = useState<boolean>(true);
-
-    const [post, setPost] = useState<string>('');
-    const [postLength, setPostLength] = useState<number>(0);
+    const {
+        postField,
+        post, setPost,
+        disabledPost, setDisabledPost,
+        clearPost,
+        copyToClipboard
+    } = usePostField();
+    const debouncedPostLength = useDebounce<number>(post.length, 200);
+    const [isConverted, setIsConverted] = useState<boolean>(false);
     const [covers, setCovers] = useState<string[]>([]);
 
-    const debouncedPostLength = useDebounce<number>(postLength, 200);
+    const toolbarActions = [];
+
+    if (!isConverted) {
+        toolbarActions.push(
+            <Button
+                type="button"
+                disabled={disabledPost || !post}
+                onClick={onConvertPost}
+            >
+                Convert
+            </Button>
+        );
+    }
+
+    if (isConverted && post.length) {
+        toolbarActions.push(
+            <Button
+                type="button"
+                onClick={onCopyPost}
+            >
+                Copy
+            </Button>
+        );
+    }
+
+    toolbarActions.push(
+        <Button
+            type="reset"
+            disabled={!post}
+            onClick={onResetAll}
+        >
+            Reset All
+        </Button>
+    );
+
+    const toolbarItems = [
+        ...toolbarActions,
+        <CounterWrapper>
+            <Counter length={debouncedPostLength} />
+        </CounterWrapper>
+    ];
 
     return (
         <PublisherStyled>
-            <Tabs
-                activeTabId={activeTabId}
-                onChangeTab={setActiveTabId}
-            >
-                <Tab
-                    tabId="config"
-                    label="Config"
-                >
-                    <PostField
-                        post={post}
-                        onPostChange={handlerTextChange}
-                    />
-                    <Toolbar
-                        fill={FILL_VALUE.last}
-                        items={[
-                            <Button
-                                type="button"
-                                disabled={!post}
-                                onClick={onConvertPost}
-                            >
-                                Convert
-                            </Button>,
-                            <Button
-                                type="reset"
-                                disabled={!post}
-                                onClick={onClearPost}
-                            >
-                                Clear
-                            </Button>,
-                            <CounterWrapper>
-                                <Counter length={debouncedPostLength} />
-                            </CounterWrapper>
-                        ]}
-                    />
-                </Tab>
-                <Tab
-                    tabId="result"
-                    label="Result"
-                    disabled={disabledResult}
-                >
-                    <PostField
-                        post={post}
-                        onPostChange={handlerTextChange}
-                    />
-                    <Toolbar
-                        fill={FILL_VALUE.last}
-                        items={[
-                            <Button
-                                type="button"
-                                onClick={onCopyPost}
-                            >
-                                Copy
-                            </Button>,
-                            <CounterWrapper>
-                                <Counter length={debouncedPostLength} />
-                            </CounterWrapper>
-                        ]}
-                    />
-                    {covers.map((dataUrl: string, index: number) => (
-                        <img
-                            key={index}
-                            srcSet={dataUrl}
-                            alt={`Post cover ${index + 1}`}
-                        />
-                    ))}
-                </Tab>
-            </Tabs>
+            {postField}
+            <Toolbar
+                fill={FILL_VALUE.last}
+                items={toolbarItems}
+            />
+            {covers.map((dataUrl: string, index: number) => (
+                <img
+                    key={index}
+                    srcSet={dataUrl}
+                    alt={`Post cover ${index + 1}`}
+                />
+            ))}
         </PublisherStyled>
     );
 
-    function updatePost(data: {
-        post: string,
-        covers?: string[]
-    }) {
-        setPost(data.post);
-        setPostLength(data.post.length);
-        data.covers && setCovers(data.covers);
-    }
-
-    function handlerTextChange(value: string): void {
-        updatePost({ post: value });
-    }
 
     function onConvertPost(): void {
-
-        setActiveTabId('result');
-        setDisabledResult(false);
-
         const p = post.substring(0, 20);
-        updatePost({ post: p });
+        setIsConverted(true);
+        setPost(p);
         return;
 
-        if (!postLength) {
+        if (!post.length) {
             return;
         }
 
-        setDisabledResult(true);
+        setIsConverted(false);
 
         fetch('http://localhost:3000/api/v1/converter', {
             method: 'POST',
@@ -147,31 +122,24 @@ const Publisher = (): JSX.Element => {
                 }
             })
             .then(result => {
-                setActiveTabId('result');
-                setDisabledResult(false);
-                updatePost({
-                    post: result.post,
-                    covers: result.covers
-                });
+                setIsConverted(true);
+                setDisabledPost(true);
+                setPost(result.post);
+                result.covers && setCovers(result.covers);
             })
             .catch(e => {
-                setDisabledResult(true);
+                setDisabledPost(false);
                 new Error(e);
             });
     }
 
-    function onClearPost(): void {
-        setPost('');
-        setPostLength(0);
+    function onResetAll(): void {
+        clearPost();
+        setIsConverted(false);
     }
 
     function onCopyPost(): void {
-        const textField = document.createElement('textarea');
-        textField.innerText = post;
-        document.body.appendChild(textField);
-        textField.select();
-        document.execCommand('copy');
-        textField.remove();
+        copyToClipboard();
     }
 };
 

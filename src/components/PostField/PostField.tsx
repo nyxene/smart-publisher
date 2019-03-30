@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, RefObject, useRef } from 'react';
 import styled from 'styled-components';
+import { useInput } from '../../hooks/useInput';
 
-interface PostFieldProps {
-    post: string;
+interface PostFieldConfig {
+    post?: string;
+    disabled?: boolean;
     height?: string;
-    onPostChange?: (value: string) => void;
+}
+
+interface PostFieldProps extends PostFieldConfig {
+    postRef?: RefObject<HTMLTextAreaElement>;
+    onChange?: (event: ChangeEvent<{ value: string }>) => void;
 }
 
 const PostFieldStyled = styled.div<{ height: string | undefined }>`
@@ -37,23 +43,54 @@ const PostFieldStyled = styled.div<{ height: string | undefined }>`
     }
 `;
 
-const PostField = ({ post = '', height, onPostChange }: PostFieldProps): JSX.Element => {
-    const [value, setValue] = useState<string>(post);
+export const usePostField = ({
+    post: value = '',
+    disabled = false,
+    height = ''
+}: PostFieldConfig = {}) => {
+    const {
+        value: post,
+        onChange,
+        setValue: setPost,
+        disabled: disabledPost,
+        setDisabled: setDisabledPost,
+        clear: clearPost
+    } = useInput({ value, disabled });
 
-    return (
-        <PostFieldStyled height={height}>
-            <textarea
-                value={value}
-                onChange={e => {
-                    setValue(e.target.value);
-                    if (onPostChange) {
-                        onPostChange(e.target.value);
-                    }
+    const postRef: RefObject<HTMLTextAreaElement> = useRef(null);
+    const postField: JSX.Element = PostField({ post, postRef, disabled: disabledPost, onChange, height });
 
-                }}
-            />
-        </PostFieldStyled>
-    );
+    const copyToClipboard = () => {
+        if (postRef && postRef.current) {
+            postRef.current.select();
+            document.execCommand('copy');
+        }
+    };
+
+    return {
+        postField,
+        post,
+        setPost,
+        disabledPost,
+        setDisabledPost,
+        clearPost,
+        copyToClipboard
+    };
 };
 
-export default PostField;
+export const PostField = ({
+    post = '',
+    postRef,
+    onChange,
+    disabled,
+    height
+}: PostFieldProps): JSX.Element => (
+    <PostFieldStyled height={height}>
+            <textarea
+                ref={postRef}
+                value={post}
+                onChange={onChange}
+                disabled={disabled}
+            />
+    </PostFieldStyled>
+);
