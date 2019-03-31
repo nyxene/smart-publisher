@@ -12,6 +12,32 @@ const CounterWrapper = styled.div`
     text-align: right;
 `;
 
+const PostCover = styled.div`
+    width: 10em;
+    height: 10em;
+        border: 2px solid #27982b;
+    border-radius: 2px;
+`;
+
+const PostCoverImage = styled.img`
+    width: 100%;
+    height: 100%;
+`;
+
+const PostCoverLink = styled.a`
+    display: block;
+`;
+
+const PostCovers = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    padding: .75em;
+    
+    ${PostCover} {
+        margin: .25em;
+    }
+`;
+
 const Publisher = (): JSX.Element => {
     const {
         postField,
@@ -73,23 +99,25 @@ const Publisher = (): JSX.Element => {
                 fill={FILL_VALUE.last}
                 items={toolbarItems}
             />
-            {covers.map((dataUrl: string, index: number) => (
-                <img
-                    key={index}
-                    srcSet={dataUrl}
-                    alt={`Post cover ${index + 1}`}
-                />
-            ))}
+            <PostCovers>
+                {covers.map((dataUrl: string, index: number) => (
+                    <PostCover key={index}>
+                        <PostCoverLink
+                            href={dataUrl}
+                            download={`Post cover ${index + 1}`}
+                        >
+                            <PostCoverImage
+                                srcSet={dataUrl}
+                                alt={`Post cover ${index + 1}`}
+                            />
+                        </PostCoverLink>
+                    </PostCover>
+                ))}
+            </PostCovers>
         </PublisherStyled>
     );
 
-
     function onConvertPost(): void {
-        const p = post.substring(0, 20);
-        setIsConverted(true);
-        setPost(p);
-        return;
-
         if (!post.length) {
             return;
         }
@@ -135,7 +163,9 @@ const Publisher = (): JSX.Element => {
 
     function onResetAll(): void {
         clearPost();
+        setCovers([]);
         setIsConverted(false);
+        setDisabledPost(false);
     }
 
     function onCopyPost(): void {

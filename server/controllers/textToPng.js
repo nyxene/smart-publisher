@@ -1,4 +1,7 @@
-const { createCanvas } = require('canvas');
+const path = require('path');
+const { createCanvas, registerFont } = require('canvas');
+
+registerFont(path.join(__dirname, '/PT_Serif-Web-Regular.ttf'), { family: 'PT Serif Regular' });
 
 const COLOR_BASE = Object.freeze({
     BLACK: 'black',
@@ -14,7 +17,7 @@ const TEXT_ALIGN = Object.freeze({
 const SIZE = 2048;
 const FONT_SIZE = SIZE / 25;
 const LINE_HEIGHT = FONT_SIZE * 1.4;
-const FONT_FAMILY = 'Helvetica Neue, Helvetica, Arial, sans-serif';
+const FONT_FAMILY = 'PT Serif Regular, serif';
 const FONT_DEFAULT = `normal ${FONT_SIZE}px ${FONT_FAMILY}`;
 
 const MAX_LINE = 17;

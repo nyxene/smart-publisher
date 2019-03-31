@@ -14,13 +14,15 @@ interface PostFieldProps extends PostFieldConfig {
 }
 
 const PostFieldStyled = styled.div<{ height: string | undefined }>`
+    padding: .5em 1em 0;
     height: 100%;
     background-color: #f5f5f5;
     
     textarea {
+        display: block;
         padding: .5em 1em; 
         width: 100%;
-        height: ${({ height }) => !!height ? height : '70vh'};
+        height: ${({ height }) => !!height ? height : '50vh'};
         resize: vertical;
 
         font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif;
@@ -30,8 +32,7 @@ const PostFieldStyled = styled.div<{ height: string | undefined }>`
         letter-spacing: -.005em;
         
         border: 2px solid #d5d5d5;
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
+        border-radius: 2px;
         
         transition: border-color .2s .1s;
         
