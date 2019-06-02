@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
-const Tab = ({ children }: any): JSX.Element => <>{children}</>;
+interface TabProps {
+    children: ReactElement;
+}
+
+const Tab = ({ children }: TabProps): ReactElement => <>{children}</>;
 
 export default Tab;

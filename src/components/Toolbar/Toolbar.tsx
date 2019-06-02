@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 
 enum ALIGN {
@@ -44,12 +44,12 @@ interface ToolbarBaseProps {
 }
 
 interface ToolbarProps extends ToolbarBaseProps {
-    items: JSX.Element[];
+    items: ReactElement[];
 }
 
 const ToolbarItem = styled.div`
     & + & {
-        padding-left: .5em;
+        padding-left: 0.5em;
     }
 `;
 
@@ -58,42 +58,53 @@ export const ToolbarStyled = styled.div<ToolbarBaseProps>`
     flex-shrink: 1;
     flex-wrap: nowrap;
     flex-direction: ;
-    align-items: ${({ alignItems }) => ALIGN[alignItems || ALIGN_ITEMS_VALUE.center]};
-    justify-content: ${({ justifyContent }) => JUSTIFY_CONTENT[justifyContent || JUSTIFY_CONTENT_VALUE.start]};
+    align-items: ${({ alignItems }) =>
+        ALIGN[alignItems || ALIGN_ITEMS_VALUE.center]};
+    justify-content: ${({ justifyContent }) =>
+        JUSTIFY_CONTENT[justifyContent || JUSTIFY_CONTENT_VALUE.start]};
 
-    ${({ fill }) => fill === FILL_VALUE.all && `
+    ${({ fill }) =>
+        fill === FILL_VALUE.all &&
+        `
         ${ToolbarItem} {
-            flex: 1 1;
+            flex: 1 1 auto;
         }
     `};
-    ${({ fill }) => fill === FILL_VALUE.last && `
+    ${({ fill }) =>
+        fill === FILL_VALUE.last &&
+        `
         ${ToolbarItem}:last-child {
-            flex: 1 1;
+            flex: 1 1 auto;
         }
     `};
-    ${({ fill }) => fill === FILL_VALUE.first && `
+    ${({ fill }) =>
+        fill === FILL_VALUE.first &&
+        `
         ${ToolbarItem}:first-child {
-            flex: 1 1;
+            flex: 1 1 auto;
         }
     `};
-    
-    padding: .5em 1em;
+
+    padding: 0.5em 1em;
     min-width: 0;
     background-color: #f5f5f5;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
 `;
 
-const Toolbar = ({ alignItems, fill, justifyContent, items }: ToolbarProps): JSX.Element => (
+const Toolbar = ({
+    alignItems,
+    fill,
+    justifyContent,
+    items
+}: ToolbarProps): ReactElement => (
     <ToolbarStyled
         alignItems={alignItems}
         fill={fill}
         justifyContent={justifyContent}
     >
-        {items.map((item: JSX.Element, index: number) => (
-            <ToolbarItem key={index}>
-                {item}
-            </ToolbarItem>
+        {items.map((item: ReactElement, index: number) => (
+            <ToolbarItem key={index}>{item}</ToolbarItem>
         ))}
     </ToolbarStyled>
 );

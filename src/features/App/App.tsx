@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 import Publisher from '../Publisher';
 
-const App = (): JSX.Element => <Publisher />;
+const App = (): ReactElement => <Publisher />;
 
 export default App;

@@ -1,11 +1,13 @@
-import React, { ChangeEvent, RefObject, useRef } from 'react';
+import React, { ChangeEvent, ReactElement, RefObject, useRef } from 'react';
 import styled from 'styled-components';
+
 import { useInput } from '../../hooks/useInput';
 
 interface PostFieldConfig {
     post?: string;
-    disabled?: boolean;
     height?: string;
+    disabled?: boolean;
+    readonly?: boolean;
 }
 
 interface PostFieldProps extends PostFieldConfig {
@@ -14,28 +16,29 @@ interface PostFieldProps extends PostFieldConfig {
 }
 
 const PostFieldStyled = styled.div<{ height: string | undefined }>`
-    padding: .5em 1em 0;
+    padding: 0.5em 1em 0;
     height: 100%;
     background-color: #f5f5f5;
-    
+
     textarea {
         display: block;
-        padding: .5em 1em; 
+        padding: 0.5em 1em;
         width: 100%;
-        height: ${({ height }) => !!height ? height : '50vh'};
+        height: ${({ height }) => (!!height ? height : '50vh')};
         resize: vertical;
 
-        font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif;
+        font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman,
+            serif;
         font-size: 1.2em;
         font-weight: 400;
         line-height: 1.4em;
-        letter-spacing: -.005em;
-        
+        letter-spacing: -0.005em;
+
         border: 2px solid #d5d5d5;
         border-radius: 2px;
-        
-        transition: border-color .2s .1s;
-        
+
+        transition: border-color 0.2s 0.1s;
+
         &:focus,
         &:active {
             border-color: #27982b;
@@ -43,6 +46,25 @@ const PostFieldStyled = styled.div<{ height: string | undefined }>`
         }
     }
 `;
+
+export const PostField = ({
+    post = '',
+    postRef,
+    onChange,
+    disabled,
+    readonly,
+    height
+}: PostFieldProps): ReactElement => (
+    <PostFieldStyled height={height}>
+        <textarea
+            ref={postRef}
+            value={post}
+            onChange={onChange}
+            disabled={disabled}
+            readOnly={readonly}
+        />
+    </PostFieldStyled>
+);
 
 export const usePostField = ({
     post: value = '',
@@ -55,16 +77,25 @@ export const usePostField = ({
         setValue: setPost,
         disabled: disabledPost,
         setDisabled: setDisabledPost,
+        readonly: readonlyPost,
+        setReadonly: setReadonlyPost,
         clear: clearPost
     } = useInput({ value, disabled });
-
     const postRef: RefObject<HTMLTextAreaElement> = useRef(null);
-    const postField: JSX.Element = PostField({ post, postRef, disabled: disabledPost, onChange, height });
-
+    const postField: ReactElement = PostField({
+        post,
+        postRef,
+        disabled: disabledPost,
+        readonly: readonlyPost,
+        onChange,
+        height
+    });
     const copyToClipboard = () => {
         if (postRef && postRef.current) {
             postRef.current.select();
             document.execCommand('copy');
+            postRef.current.setSelectionRange(0, 0);
+            postRef.current.blur();
         }
     };
 
@@ -74,24 +105,9 @@ export const usePostField = ({
         setPost,
         disabledPost,
         setDisabledPost,
+        readonlyPost,
+        setReadonlyPost,
         clearPost,
         copyToClipboard
     };
 };
-
-export const PostField = ({
-    post = '',
-    postRef,
-    onChange,
-    disabled,
-    height
-}: PostFieldProps): JSX.Element => (
-    <PostFieldStyled height={height}>
-            <textarea
-                ref={postRef}
-                value={post}
-                onChange={onChange}
-                disabled={disabled}
-            />
-    </PostFieldStyled>
-);

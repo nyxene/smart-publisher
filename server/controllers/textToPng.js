@@ -1,7 +1,10 @@
 const path = require('path');
 const { createCanvas, registerFont } = require('canvas');
 
-registerFont(path.join(__dirname, '/PT_Serif-Web-Regular.ttf'), { family: 'PT Serif Regular' });
+registerFont(
+    path.join(__dirname, '../../assets/fonts/PT_Serif-Web-Regular.ttf'),
+    { family: 'PT Serif Regular' }
+);
 
 const COLOR_BASE = Object.freeze({
     BLACK: 'black',
@@ -43,7 +46,9 @@ class TextToPng {
 
     render(text) {
         if (!text || typeof text !== 'string') {
-            throw new Error('Error when render text. Text is empty or not string');
+            throw new Error(
+                'Error when render text. Text is empty or not string'
+            );
         }
 
         const textBlocks = TextToPng.getTextBlocks(text);
@@ -104,7 +109,10 @@ class TextToPng {
             const testLine = line + word + ' ';
             const testLineWidth = ctx.measureText(testLine).width;
 
-            if (addNewLines.indexOf(n) > -1 || testLineWidth > SIZE - 20 && n > 0) { // TODO Improve
+            if (
+                addNewLines.indexOf(n) > -1 ||
+                (testLineWidth > SIZE - 20 && n > 0)
+            ) {
                 ctx.fillText(line, textX, textY);
 
                 if (!textBlocks[count]) {

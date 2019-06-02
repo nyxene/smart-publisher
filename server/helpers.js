@@ -2,7 +2,13 @@ const bunyan = require('bunyan');
 
 const { API_ROOT, API_VERSION, LOG_LEVEL } = require('./config');
 
-const basePath = path => API_ROOT.replace(/\/$/, '') + '/v' + API_VERSION + '/' + path.replace(/^\//, '');
+const basePath = path =>
+    API_ROOT.replace(/\/$/, '') +
+    '/v' +
+    API_VERSION +
+    '/' +
+    path.replace(/^\//, '');
+
 const log = moduleName =>
     bunyan.createLogger({
         name: moduleName,
