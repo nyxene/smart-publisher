@@ -84,7 +84,7 @@ const Publisher = (): ReactElement => {
         copyToClipboard();
     };
 
-    const toolbarActions = [];
+    const toolbarActions: ReactElement[] = [];
 
     if (!isConverted) {
         toolbarActions.push(
@@ -112,12 +112,15 @@ const Publisher = (): ReactElement => {
         </Button>
     );
 
-    const toolbarItems = [
+    const toolbarItems: ReactElement[] = [
         ...toolbarActions,
         <CounterWrapper>
             <Counter length={debouncedPostLength} />
         </CounterWrapper>
     ];
+
+    const now = Date.now();
+    const getStamp = (index: number): number => now + index;
 
     return (
         <PublisherStyled>
@@ -128,11 +131,11 @@ const Publisher = (): ReactElement => {
                     <PostCover key={index}>
                         <PostCoverLink
                             href={dataUrl}
-                            download={`Post cover ${index + 1}`}
+                            download={`post_cover_${getStamp(index)}`}
                         >
                             <PostCoverImage
                                 srcSet={dataUrl}
-                                alt={`Post cover ${index + 1}`}
+                                alt={`Post cover ${getStamp(index)}`}
                             />
                         </PostCoverLink>
                     </PostCover>

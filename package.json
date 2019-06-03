@@ -13,9 +13,10 @@
         "react",
         "nodejs"
     ],
+    "homepage": ".",
     "scripts": {
         "start": "react-scripts start",
-        "build": "cross-env react-scripts build",
+        "build": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
         "test": "react-scripts test",
         "lint": "node ./node_modules/eslint/bin/eslint.js --config .eslintrc.json --ext .js,.ts,.tsx src",
         "format": "prettier --write \"{src,server}/**/*.{js,ts,tsx}\"",

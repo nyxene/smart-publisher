@@ -44,10 +44,13 @@ export default class Converter {
     ): { mainText: string; otherText?: string } {
         const text: string = this.typograf.execute(originalText);
 
+        const mainTextArray = text.slice(0, this.mainTextMaxLength).split(' ');
+        mainTextArray.splice(mainTextArray.length - 1,1);
+        const mainText = mainTextArray.join(' ');
+
         return {
-            // TODO: Add smart substring
-            mainText: text.substring(0, this.mainTextMaxLength),
-            otherText: text.substring(this.mainTextMaxLength)
+            mainText,
+            otherText: text.substring(mainText.length)
         };
     }
 }
