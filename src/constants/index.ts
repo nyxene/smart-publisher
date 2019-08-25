@@ -1,1 +1,1 @@
-export const MAIN_TEXT_MAX_LENGTH: number = 2200;
+export const MAIN_TEXT_MAX_LENGTH = 2200;

@@ -1,21 +1,25 @@
+const Typograf = require('typograf');
+
 const TextToPng = require('../controllers/textToPng');
 
-const POST_MAX_LENGTH = 2200;
-const COLOR_PATTERN = '^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$';
+const MAIN_TEXT_MAX_LENGTH = 2200;
 
 class Converter {
     constructor({
-        postMaxLength: postMaxLength = POST_MAX_LENGTH,
+        mainTextMaxLength = MAIN_TEXT_MAX_LENGTH,
         textColor = '',
         bgColor = ''
     } = {}) {
-        this.postMaxLength = postMaxLength;
+        this.mainTextMaxLength = mainTextMaxLength;
         this.textColor = textColor;
         this.bgColor = bgColor;
+
+        this.typograf = new Typograf({ locale: ['ru', 'en-US'] });
+        this.typograf.enableRule('common/nbsp/replaceNbsp');
     }
 
-    run(originalPost) {
-        const { post, otherText } = this.preparePost(originalPost);
+    run(originalText) {
+        const { mainText, otherText } = this.prepare(originalText);
         const options = {
             textColor: this.textColor,
             bgColor: this.bgColor
@@ -28,43 +32,43 @@ class Converter {
             covers = t2p.render(otherText);
         }
 
-        return { post, covers };
+        return { mainText, covers };
     }
 
-    preparePost(originalPost) {
-        if (!originalPost || typeof originalPost !== 'string') {
-            throw new Error('Error when prepare post. Post is empty or not string');
-        }
-
-        const post = originalPost.trim();
+    prepare(originalText) {
+        const text = this.typograf.execute(originalText);
 
         return {
-            post: post.substring(0, this.postMaxLength),
-            otherText: post.substring(this.postMaxLength)
+            // TODO: Add smart substring
+            mainText: text.substring(0, this.mainTextMaxLength),
+            otherText: text.substring(this.mainTextMaxLength)
         };
     }
 }
 
-function validateOptions(options) {
-    return Object.keys(options).reduce((result, key) => {
-        if (key === 'textColor' || key === 'bgColor') {
-            const isValid = _validateColor(options[key]);
+function validateConfig(config) {
+    return Object.keys(config).reduce(
+        (result, key) => {
+            if (key === 'textColor' || key === 'bgColor') {
+                const isValid = _validateColor(config[key]);
 
-            if (!isValid) {
-                result.hasError = true;
-                result.errorsField.push(key);
+                if (!isValid) {
+                    result.hasError = true;
+                    result.errorsField.push(key);
+                }
             }
-        }
 
-        return result;
-    }, { hasError: false, errorsField: [] });
+            return result;
+        },
+        { hasError: false, errorsField: [] }
+    );
 }
 
 function _validateColor(color) {
-    return new RegExp(COLOR_PATTERN).test(color);
+    return new RegExp('^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$').test(color);
 }
 
 module.exports = {
     Converter,
-    validateOptions
+    validateConfig
 };

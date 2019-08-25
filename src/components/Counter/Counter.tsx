@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 
 import { MAIN_TEXT_MAX_LENGTH } from '../../constants';
@@ -15,14 +15,14 @@ const CounterStyled = styled.div`
 `;
 
 const CounterCurrentLength = styled.span<{ length: number }>`
-    color: ${({ length }) => length > MAIN_TEXT_MAX_LENGTH ? '#cb292c' : '#000'};
+    color: ${({ length }) =>
+        length > MAIN_TEXT_MAX_LENGTH ? '#cb292c' : '#000'};
 `;
 
-const Counter = ({ length }: CounterProps): JSX.Element => (
+const Counter = ({ length }: CounterProps): ReactElement => (
     <CounterStyled>
-        <CounterCurrentLength length={length}>
-            {length}
-        </CounterCurrentLength> / {MAIN_TEXT_MAX_LENGTH}
+        <CounterCurrentLength length={length}>{length}</CounterCurrentLength> /{' '}
+        {MAIN_TEXT_MAX_LENGTH}
     </CounterStyled>
 );
 

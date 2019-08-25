@@ -1,13 +1,13 @@
-import React, { Children } from 'react';
+import React, { Children, ReactElement } from 'react';
 import styled from 'styled-components';
 
-import TabButtons from './TabButtons';
 import Tab from './Tab';
+import TabButtons from './TabButtons';
 
 interface TabsProps {
     activeTabId: string;
     onChangeTab: (tabId: string) => void;
-    children: any;
+    children: ReactElement;
 }
 
 export interface TabProps {
@@ -20,7 +20,11 @@ const TabContent = styled.div`
     padding: 1em 1.5em;
 `;
 
-const Tabs = ({ activeTabId, onChangeTab, children }: TabsProps): JSX.Element => {
+const Tabs = ({
+    activeTabId,
+    onChangeTab,
+    children
+}: TabsProps): ReactElement => {
     let tabProps: TabProps[] = [];
 
     const content = Children.map(children, child => {
@@ -42,9 +46,7 @@ const Tabs = ({ activeTabId, onChangeTab, children }: TabsProps): JSX.Element =>
                 onChangeTab={onChangeTab}
                 tabs={tabProps}
             />
-            <TabContent>
-                {content}
-            </TabContent>
+            <TabContent>{content}</TabContent>
         </>
     );
 };

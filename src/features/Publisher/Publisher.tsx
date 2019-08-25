@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, Counter, FILL_VALUE, Toolbar } from '../../components';
+import { usePostField } from '../../components/PostField';
 import { useDebounce } from '../../hooks/useDebounce';
-import { usePostField } from '../../components/PostField/';
+import Converter from '../../services/converter';
 
 const PublisherStyled = styled.div`
+    padding: 0.5em;
+    background-color: #f5f5f5;
 `;
 
 const CounterWrapper = styled.div`
@@ -14,8 +17,8 @@ const CounterWrapper = styled.div`
 
 const PostCover = styled.div`
     width: 10em;
-    height: 10em;
-        border: 2px solid #27982b;
+    height: 12.5em;
+    border: 2px solid #27982b;
     border-radius: 2px;
 `;
 
@@ -31,18 +34,19 @@ const PostCoverLink = styled.a`
 const PostCovers = styled.div`
     display: flex;
     flex-wrap: wrap;
-    padding: .75em;
-    
+
     ${PostCover} {
-        margin: .25em;
+        margin: 0.25em;
     }
 `;
 
-const Publisher = (): JSX.Element => {
+const Publisher = (): ReactElement => {
     const {
         postField,
-        post, setPost,
-        disabledPost, setDisabledPost,
+        post,
+        setPost,
+        readonlyPost,
+        setReadonlyPost,
         clearPost,
         copyToClipboard
     } = usePostField();
@@ -50,13 +54,45 @@ const Publisher = (): JSX.Element => {
     const [isConverted, setIsConverted] = useState<boolean>(false);
     const [covers, setCovers] = useState<string[]>([]);
 
-    const toolbarActions = [];
+    const onConvertPost = () => {
+        if (!post.length) {
+            return;
+        }
+
+        try {
+            const converter = new Converter({
+                textColor: '#514253',
+                bgColor: '#f4eae8'
+            });
+            const { mainText: convertedPost, covers } = converter.run(post);
+
+            setPost(convertedPost);
+            setReadonlyPost(true);
+            setIsConverted(true);
+            setCovers(covers);
+        } catch (e) {
+            setReadonlyPost(false);
+        }
+    };
+
+    const onResetAll = () => {
+        clearPost();
+        setReadonlyPost(false);
+        setIsConverted(false);
+        setCovers([]);
+    };
+
+    const onCopyPost = () => {
+        copyToClipboard();
+    };
+
+    const toolbarActions: ReactElement[] = [];
 
     if (!isConverted) {
         toolbarActions.push(
             <Button
                 type="button"
-                disabled={disabledPost || !post}
+                disabled={readonlyPost || !post}
                 onClick={onConvertPost}
             >
                 Convert
@@ -66,111 +102,51 @@ const Publisher = (): JSX.Element => {
 
     if (isConverted && post.length) {
         toolbarActions.push(
-            <Button
-                type="button"
-                onClick={onCopyPost}
-            >
+            <Button type="button" onClick={onCopyPost}>
                 Copy
             </Button>
         );
     }
 
     toolbarActions.push(
-        <Button
-            type="reset"
-            disabled={!post}
-            onClick={onResetAll}
-        >
+        <Button type="reset" disabled={!post} onClick={onResetAll}>
             Reset All
         </Button>
     );
 
-    const toolbarItems = [
+    const toolbarItems: ReactElement[] = [
         ...toolbarActions,
         <CounterWrapper>
             <Counter length={debouncedPostLength} />
         </CounterWrapper>
     ];
 
+    const now = Date.now();
+    const getStamp = (index: number): number => now + index;
+
     return (
         <PublisherStyled>
             {postField}
-            <Toolbar
-                fill={FILL_VALUE.last}
-                items={toolbarItems}
-            />
-            <PostCovers>
-                {covers.map((dataUrl: string, index: number) => (
-                    <PostCover key={index}>
-                        <PostCoverLink
-                            href={dataUrl}
-                            download={`Post cover ${index + 1}`}
-                        >
-                            <PostCoverImage
-                                srcSet={dataUrl}
-                                alt={`Post cover ${index + 1}`}
-                            />
-                        </PostCoverLink>
-                    </PostCover>
-                ))}
-            </PostCovers>
+            <Toolbar fill={FILL_VALUE.last} items={toolbarItems} />
+            {!!covers.length && (
+                <PostCovers>
+                    {covers.map((dataUrl: string, index: number) => (
+                        <PostCover key={index}>
+                            <PostCoverLink
+                                href={dataUrl}
+                                download={`post_cover_${getStamp(index)}`}
+                            >
+                                <PostCoverImage
+                                    srcSet={dataUrl}
+                                    alt={`Post cover ${getStamp(index)}`}
+                                />
+                            </PostCoverLink>
+                        </PostCover>
+                    ))}
+                </PostCovers>
+            )}
         </PublisherStyled>
     );
-
-    function onConvertPost(): void {
-        if (!post.length) {
-            return;
-        }
-
-        setIsConverted(false);
-
-        fetch('http://localhost:3000/api/v1/converter', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                post: post,
-                options: {
-                    textColor: '#514253',
-                    bgColor: '#f4eae8'
-                }
-            })
-        })
-            .then(result => {
-                try {
-                    if (result.status >= 400) {
-                        return result.json().then((err: { errors: string }) => {
-                            throw new Error(err.errors);
-                        });
-                    }
-                    return result.json();
-                } catch (e) {
-                    throw new Error(e);
-                }
-            })
-            .then(result => {
-                setIsConverted(true);
-                setDisabledPost(true);
-                setPost(result.post);
-                result.covers && setCovers(result.covers);
-            })
-            .catch(e => {
-                setDisabledPost(false);
-                new Error(e);
-            });
-    }
-
-    function onResetAll(): void {
-        clearPost();
-        setCovers([]);
-        setIsConverted(false);
-        setDisabledPost(false);
-    }
-
-    function onCopyPost(): void {
-        copyToClipboard();
-    }
 };
 
 export default Publisher;
