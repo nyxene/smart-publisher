@@ -13,7 +13,7 @@
         "react",
         "nodejs"
     ],
-    "homepage": ".",
+    "homepage": "https://nyxene.github.io/smart-publisher/",
     "scripts": {
         "start": "react-scripts start",
         "build": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
