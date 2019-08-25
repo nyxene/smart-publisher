@@ -45,7 +45,7 @@ export default class Converter {
         const text: string = this.typograf.execute(originalText);
 
         const mainTextArray = text.slice(0, this.mainTextMaxLength).split(' ');
-        mainTextArray.splice(mainTextArray.length - 1,1);
+        mainTextArray.splice(mainTextArray.length - 1, 1);
         const mainText = mainTextArray.join(' ');
 
         return {

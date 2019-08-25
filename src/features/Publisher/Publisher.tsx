@@ -6,7 +6,10 @@ import { usePostField } from '../../components/PostField';
 import { useDebounce } from '../../hooks/useDebounce';
 import Converter from '../../services/converter';
 
-const PublisherStyled = styled.div``;
+const PublisherStyled = styled.div`
+    padding: 0.5em;
+    background-color: #f5f5f5;
+`;
 
 const CounterWrapper = styled.div`
     text-align: right;
@@ -14,7 +17,7 @@ const CounterWrapper = styled.div`
 
 const PostCover = styled.div`
     width: 10em;
-    height: 10em;
+    height: 12.5em;
     border: 2px solid #27982b;
     border-radius: 2px;
 `;
@@ -31,7 +34,6 @@ const PostCoverLink = styled.a`
 const PostCovers = styled.div`
     display: flex;
     flex-wrap: wrap;
-    padding: 0.75em;
 
     ${PostCover} {
         margin: 0.25em;
@@ -126,21 +128,23 @@ const Publisher = (): ReactElement => {
         <PublisherStyled>
             {postField}
             <Toolbar fill={FILL_VALUE.last} items={toolbarItems} />
-            <PostCovers>
-                {covers.map((dataUrl: string, index: number) => (
-                    <PostCover key={index}>
-                        <PostCoverLink
-                            href={dataUrl}
-                            download={`post_cover_${getStamp(index)}`}
-                        >
-                            <PostCoverImage
-                                srcSet={dataUrl}
-                                alt={`Post cover ${getStamp(index)}`}
-                            />
-                        </PostCoverLink>
-                    </PostCover>
-                ))}
-            </PostCovers>
+            {!!covers.length && (
+                <PostCovers>
+                    {covers.map((dataUrl: string, index: number) => (
+                        <PostCover key={index}>
+                            <PostCoverLink
+                                href={dataUrl}
+                                download={`post_cover_${getStamp(index)}`}
+                            >
+                                <PostCoverImage
+                                    srcSet={dataUrl}
+                                    alt={`Post cover ${getStamp(index)}`}
+                                />
+                            </PostCoverLink>
+                        </PostCover>
+                    ))}
+                </PostCovers>
+            )}
         </PublisherStyled>
     );
 };

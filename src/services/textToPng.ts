@@ -19,14 +19,15 @@ export interface TextToPngConfig {
     borderColor?: string;
 }
 
-const SIZE = 2048;
-const FONT_SIZE = SIZE / 25;
+const SIZE_WIDTH = 1080;
+const SIZE_HEIGHT = SIZE_WIDTH * 1.25;
+const FONT_SIZE = SIZE_WIDTH / 25;
 const LINE_HEIGHT = FONT_SIZE * 1.4;
 const FONT_FAMILY =
     'Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif';
 const FONT_DEFAULT = `normal ${FONT_SIZE}px ${FONT_FAMILY}`;
 
-const MAX_LINE = 17;
+const MAX_LINE = Math.floor(SIZE_WIDTH / FONT_SIZE);
 
 const createCanvas = (width: number, height: number) => {
     const canvas = document.createElement('canvas');
@@ -68,7 +69,7 @@ export class TextToPng {
         // TODO Think of a more effective solution
         return textBlocks.map(
             (textBlock: string[]): string => {
-                const canvas = createCanvas(SIZE, SIZE);
+                const canvas = createCanvas(SIZE_WIDTH, SIZE_HEIGHT);
                 const ctx: CanvasRenderingContext2D | null = canvas.getContext(
                     '2d'
                 );
@@ -97,7 +98,7 @@ export class TextToPng {
     }
 
     private static getTextBlocks(text: string): (string[])[] {
-        const canvas = createCanvas(SIZE, SIZE);
+        const canvas = createCanvas(SIZE_WIDTH, SIZE_HEIGHT);
         const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
 
         if (!ctx) {
@@ -136,7 +137,7 @@ export class TextToPng {
 
             if (
                 addNewLines.indexOf(n) > -1 ||
-                (testLineWidth > SIZE - 20 && n > 0)
+                (testLineWidth > SIZE_WIDTH - 20 && n > 0)
             ) {
                 ctx.fillText(line, textX, textY);
 

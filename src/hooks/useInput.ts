@@ -12,7 +12,7 @@ export const useInput = ({
     disabled: initialDisabled = false,
     readonly: initialReadonly = false,
     valueKey = 'value'
-}: InputProps) => {
+}: InputProps = {}) => {
     const [value, setValue] = useState<string>(String(initialValue));
     const [disabled, setDisabled] = useState<boolean>(initialDisabled);
     const [readonly, setReadonly] = useState<boolean>(initialReadonly);

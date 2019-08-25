@@ -85,7 +85,7 @@ export const ToolbarStyled = styled.div<ToolbarBaseProps>`
         }
     `};
 
-    padding: 0.5em 1em;
+    padding: 0.5em 0;
     min-width: 0;
     background-color: #f5f5f5;
     border-bottom-left-radius: 2px;

@@ -16,13 +16,12 @@ interface PostFieldProps extends PostFieldConfig {
 }
 
 const PostFieldStyled = styled.div<{ height: string | undefined }>`
-    padding: 0.5em 1em 0;
     height: 100%;
     background-color: #f5f5f5;
 
     textarea {
         display: block;
-        padding: 0.5em 1em;
+        padding: 0.5em;
         width: 100%;
         height: ${({ height }) => (!!height ? height : '50vh')};
         resize: vertical;
