@@ -17,7 +17,7 @@
     "scripts": {
         "start": "parcel serve public/index.html -d build",
         "clean": "rimraf build/*",
-        "build": "cross-env NODE_ENV=production parcel build public/index.html --public-url ./build/ -d build",
+        "build": "cross-env NODE_ENV=production parcel build public/index.html --public-url ./ -d build",
         "test": "react-scripts test",
         "lint": "node ./node_modules/eslint/bin/eslint.js --config .eslintrc.json --ext .js,.ts,.tsx src",
         "format": "prettier --write \"{src,server}/**/*.{js,ts,tsx}\"",
