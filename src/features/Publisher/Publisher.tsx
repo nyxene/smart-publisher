@@ -1,12 +1,13 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, Fragment } from 'react';
 import styled from 'styled-components';
 
 import { Button, Counter, FILL_VALUE, Toolbar } from '../../components';
+import { PostCover } from '../../components/PostCover';
 import { usePostField } from '../../components/PostField';
 import { useDebounce } from '../../hooks/useDebounce';
 import Converter from '../../services/converter';
 
-const PublisherStyled = styled.div`
+const Root = styled.div`
     padding: 0.5em;
     background-color: #f5f5f5;
 `;
@@ -15,29 +16,18 @@ const CounterWrapper = styled.div`
     text-align: right;
 `;
 
-const PostCover = styled.div`
-    width: 10em;
-    height: 12.5em;
-    border: 2px solid #27982b;
-    border-radius: 2px;
+const PostCoversRoot = styled.div`
+    margin: 1em 0;
 `;
 
-const PostCoverImage = styled.img`
-    width: 100%;
-    height: 100%;
+const PostCoversTitle = styled.h2`
+    margin-bottom: 0.5em;
 `;
 
-const PostCoverLink = styled.a`
-    display: block;
-`;
-
-const PostCovers = styled.div`
+const PostCoversTile = styled.div`
     display: flex;
     flex-wrap: wrap;
-
-    ${PostCover} {
-        margin: 0.25em;
-    }
+    margin: -0.25em;
 `;
 
 const Publisher = (): ReactElement => {
@@ -125,27 +115,25 @@ const Publisher = (): ReactElement => {
     const getStamp = (index: number): number => now + index;
 
     return (
-        <PublisherStyled>
+        <Root>
             {postField}
             <Toolbar fill={FILL_VALUE.last} items={toolbarItems} />
             {!!covers.length && (
-                <PostCovers>
-                    {covers.map((dataUrl: string, index: number) => (
-                        <PostCover key={index}>
-                            <PostCoverLink
-                                href={dataUrl}
-                                download={`post_cover_${getStamp(index)}`}
-                            >
-                                <PostCoverImage
-                                    srcSet={dataUrl}
-                                    alt={`Post cover ${getStamp(index)}`}
+                <PostCoversRoot>
+                    <PostCoversTitle>Download images:</PostCoversTitle>
+                    <PostCoversTile>
+                        {covers.map((dataUrl: string, index: number) => (
+                            <Fragment key={getStamp(index)}>
+                                <PostCover
+                                    dataUrl={dataUrl}
+                                    name={`post_cover_${getStamp(index)}`}
                                 />
-                            </PostCoverLink>
-                        </PostCover>
-                    ))}
-                </PostCovers>
+                            </Fragment>
+                        ))}
+                    </PostCoversTile>
+                </PostCoversRoot>
             )}
-        </PublisherStyled>
+        </Root>
     );
 };
 
