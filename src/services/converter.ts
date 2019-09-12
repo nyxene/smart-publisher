@@ -44,13 +44,20 @@ export default class Converter {
     ): { mainText: string; otherText?: string } {
         const text: string = this.typograf.execute(originalText);
 
+        if (text.length <= this.mainTextMaxLength) {
+            return {
+                mainText: text,
+                otherText: ''
+            };
+        }
+
         const mainTextArray = text.slice(0, this.mainTextMaxLength).split(' ');
         mainTextArray.splice(mainTextArray.length - 1, 1);
         const mainText = mainTextArray.join(' ');
 
         return {
             mainText,
-            otherText: text.substring(mainText.length)
+            otherText: text.substring(mainText.length).trim()
         };
     }
 }

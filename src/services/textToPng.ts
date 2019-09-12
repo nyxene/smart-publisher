@@ -21,13 +21,13 @@ export interface TextToPngConfig {
 
 const SIZE_WIDTH = 1080;
 const SIZE_HEIGHT = SIZE_WIDTH * 1.25;
-const FONT_SIZE = SIZE_WIDTH / 25;
+const FONT_SIZE = 44;
 const LINE_HEIGHT = FONT_SIZE * 1.4;
 const FONT_FAMILY =
     'Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif';
 const FONT_DEFAULT = `normal ${FONT_SIZE}px ${FONT_FAMILY}`;
 
-const MAX_LINE = Math.floor(SIZE_WIDTH / FONT_SIZE);
+const MAX_LINE = 20;
 
 const createCanvas = (width: number, height: number) => {
     const canvas = document.createElement('canvas');
@@ -50,7 +50,7 @@ export class TextToPng {
         textColor = TEXT_COLOR.BLACK,
         textAlign = TEXT_ALIGN.LEFT,
         bgColor = 'white',
-        padding = 0,
+        padding = 40,
         borderWidth = 0,
         borderColor = 'black'
     }: TextToPngConfig = {}) {
@@ -64,7 +64,7 @@ export class TextToPng {
     }
 
     public render(text: string): string[] {
-        const textBlocks = TextToPng.getTextBlocks(text);
+        const textBlocks = this.getTextBlocks(text);
 
         // TODO Think of a more effective solution
         return textBlocks.map(
@@ -78,7 +78,7 @@ export class TextToPng {
                     return '';
                 }
 
-                let textY = 0;
+                let textY = this.padding;
 
                 ctx.globalAlpha = 1;
                 ctx.fillStyle = this.bgColor;
@@ -88,7 +88,7 @@ export class TextToPng {
                 ctx.textBaseline = 'top';
 
                 textBlock.forEach((textLine: string) => {
-                    ctx.fillText(textLine, 20, textY);
+                    ctx.fillText(textLine, this.padding - 10, textY);
                     textY += LINE_HEIGHT;
                 });
 
@@ -97,7 +97,7 @@ export class TextToPng {
         );
     }
 
-    private static getTextBlocks(text: string): (string[])[] {
+    private getTextBlocks(text: string): (string[])[] {
         const canvas = createCanvas(SIZE_WIDTH, SIZE_HEIGHT);
         const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
 
@@ -137,14 +137,16 @@ export class TextToPng {
 
             if (
                 addNewLines.indexOf(n) > -1 ||
-                (testLineWidth > SIZE_WIDTH - 20 && n > 0)
+                (testLineWidth > SIZE_WIDTH - this.padding * 2 && n > 0)
             ) {
                 ctx.fillText(line, textX, textY);
 
                 if (!textBlocks[count]) {
                     textBlocks.push([]);
                 }
+
                 textBlocks[count].push(line);
+
                 if (textBlocks[count].length > MAX_LINE) {
                     count++;
                 }
@@ -156,7 +158,11 @@ export class TextToPng {
             }
         }
 
-        textBlocks[count].push(line);
+        if (!textBlocks[count]) {
+            textBlocks.push([line]);
+        } else {
+            textBlocks[count].push(line);
+        }
 
         return textBlocks;
     }
