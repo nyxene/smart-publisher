@@ -20,26 +20,43 @@ export const Button = styled.button<ButtonProps & { theme: Theme }>`
         font-family: ${theme.font.family};
         font-size: ${theme.font.sizes.s};
         font-weight: ${theme.font.weights.bold};
+        color: ${theme.colors.black};
+        background-color: ${theme.colors.white};
     `}
+
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
 
     ${({ theme, ui }) =>
         ui === BUTTON_UI.primary &&
         css`
-            background-color: ${theme.colors.accent};
+            color: ${theme.colors.white};
+            background-color: ${theme.colors.primary};
         `}
 
     ${({ theme, ui }) =>
         ui === BUTTON_UI.secondary &&
         css`
-            background-color: ${theme.colors.warning};
+            color: ${theme.colors.black};
+            background-color: ${theme.colors.secondary};
         `}
 
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #fff;
-    border: 0;
-    outline: 0;
-    cursor: pointer;
+    ${({ theme, ui }) =>
+        ui === BUTTON_UI.warn &&
+        css`
+            color: ${theme.colors.white};
+            background-color: ${theme.colors.warn};
+        `}
+
+    ${({ theme, ui }) =>
+        ui === BUTTON_UI.accent &&
+        css`
+            color: ${theme.colors.white};
+            background-color: ${theme.colors.accent};
+        `}
 
     ${({
         borderRadiusTopLeft = BORDER_RADIUS,

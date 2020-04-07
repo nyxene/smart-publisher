@@ -1,49 +1,25 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { Theme } from '~theme';
+import { TextareaInput } from '~components';
 
 import { PostFieldProps } from './types';
 
-const PostFieldStyled = styled.div<{ height?: string } & { theme: Theme }>`
+const Root = styled.div`
     width: 100%;
     height: 100%;
-    background-color: #f5f5f5;
 
-    textarea {
-        display: block;
-        padding: 0.5em;
-        width: 100%;
-        height: ${({ height }) => (!!height ? height : '100%')};
-        resize: vertical;
-
-        ${({ theme }) => css`
-            font-family: ${theme.font.family};
-            font-size: ${theme.font.sizes.l};
-            font-weight: ${theme.font.weights.normal};
-        `}
-
-        font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif;
-        font-size: 1.2em;
-        font-weight: 400;
-        line-height: 1.4em;
-        letter-spacing: -0.005em;
-
-        border: 2px solid #d5d5d5;
-        border-radius: 2px;
-
-        transition: border-color 0.2s 0.1s;
-
-        &:focus,
-        &:active {
-            border-color: #27982b;
-            outline: 0;
-        }
+    ${TextareaInput} {
+        height: 100%;
     }
 `;
 
+Root.displayName = 'Root';
+
 export const PostField = ({ post = '', postRef, onChange, disabled, readonly, height }: PostFieldProps) => (
-    <PostFieldStyled height={height}>
-        <textarea ref={postRef} value={post} onChange={onChange} disabled={disabled} readOnly={readonly} />
-    </PostFieldStyled>
+    <Root>
+        <TextareaInput ref={postRef} value={post} onChange={onChange} disabled={disabled} readOnly={readonly} />
+    </Root>
 );
+
+PostField.displayName = 'PostField';

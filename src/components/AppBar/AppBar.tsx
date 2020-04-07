@@ -4,8 +4,8 @@ import styled, { css } from 'styled-components';
 import { getKey } from '~core/helpers';
 import { Theme } from '~/theme';
 
-import { AppBarProps } from './types';
 import { getAppBarControl } from './controls';
+import { AppBarProps } from './types';
 
 const Root = styled.div`
     flex-shrink: 0;
@@ -16,7 +16,7 @@ const Root = styled.div`
     width: 100%;
     ${({ theme }: { theme: Theme }) => css`
         height: ${theme.baseSize.xxl};
-        background-color: ${theme.colors.backgroundNeutralLight};
+        background-color: ${theme.colors.backgroundNeutral};
     `};
 
     & > *:not(:first-child) {

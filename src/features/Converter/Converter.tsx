@@ -67,7 +67,10 @@ export const Converter = () => {
                 items={[
                     {
                         type: APP_BAR_CONTROL_TYPE.brandLink,
-                        text: 'SP'
+                        text: 'SP',
+                        onClick: () => {
+                            location.reload();
+                        }
                     },
                     {
                         type: APP_BAR_CONTROL_TYPE.fill
@@ -82,7 +85,7 @@ export const Converter = () => {
                     },
                     {
                         type: APP_BAR_CONTROL_TYPE.button,
-                        ui: APP_BAR_BUTTON_UI.secondary,
+                        ui: APP_BAR_BUTTON_UI.warn,
                         text: 'Reset',
                         hidden: !post,
                         onClick: () => {

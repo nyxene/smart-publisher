@@ -1,34 +1,11 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { clearProps } from '~core/helpers';
-import { Theme } from '~/theme';
+import { APP_BAR_BUTTON_UI, AppBarButton } from '../AppBarButton';
 
-import { AppBarBrandLinkProps } from './types';
-
-export const AppBarBrandLink = styled(
-    ({ text, onClick = () => location.reload(), ref, ...restProps }: AppBarBrandLinkProps) => {
-        return (
-            <button ref={ref} onClick={onClick} {...clearProps(restProps)}>
-                {text}
-            </button>
-        );
-    }
-)`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 0;
-    outline: 0;
-    cursor: pointer;
-
-    ${({ theme }: { theme: Theme }) => css`
-        width: ${theme.baseSize.xxl};
-        height: ${theme.baseSize.xxl};
-        color: ${theme.colors.accent};
-        font-weight: ${theme.font.weights.bold};
-    `};
+export const AppBarBrandLink = styled(AppBarButton).attrs({
+    ui: APP_BAR_BUTTON_UI.brand
+})`
+    width: ${({ theme }) => theme.baseSize.xxl};
 `;
 
 AppBarBrandLink.displayName = 'AppBarBrandLink';

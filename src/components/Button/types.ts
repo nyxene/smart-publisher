@@ -2,7 +2,9 @@ import React from 'react';
 
 export enum BUTTON_UI {
     primary = 'primary',
-    secondary = 'secondary'
+    secondary = 'secondary',
+    warn = 'warn',
+    accent = 'accent'
 }
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

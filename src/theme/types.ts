@@ -10,17 +10,35 @@ export interface Theme {
         xxl: '48px';
         xxxl: '64px';
     };
+    borders: {
+        widths: {
+            base: '2px';
+            thin: '1px';
+        };
+    };
     colors: {
-        main: '#000';
-        light: '#a0a0a0';
-        error: '#e8595a';
-        warning: '#d6691f';
-        accent: '#27982b';
-        link: '#27982b';
-        backgroundNeutralLight: '#f5f5f5';
-        highlightLight: '#8ec790';
-        highlightDark: '#64c75a';
-        inherit: 'inherit';
+        black: string;
+        white: string;
+        primary: string;
+        primaryText: string;
+        primaryLight: string;
+        primaryLightText: string;
+        primaryDark: string;
+        primaryDarkText: string;
+        secondary: string;
+        secondaryText: string;
+        secondaryLight: string;
+        secondaryLightText: string;
+        secondaryDark: string;
+        secondaryDarkText: string;
+        success: string;
+        warn: string;
+        accent: string;
+        link: string;
+        linkHighlight: string;
+        backgroundNeutral: string;
+        backgroundLight: string;
+        inherit: string;
     };
     font: {
         family: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;';

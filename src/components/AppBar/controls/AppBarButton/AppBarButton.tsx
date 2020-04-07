@@ -14,6 +14,7 @@ export const AppBarButton = styled(({ text, ref, ...restProps }: AppBarButtonPro
     );
 })`
     position: relative;
+    margin: 0;
     height: 100%;
 
     display: inline-flex;
@@ -22,27 +23,16 @@ export const AppBarButton = styled(({ text, ref, ...restProps }: AppBarButtonPro
 
     ${({ theme }) => css`
         padding: 0 ${theme.baseSize.s};
-        min-width: ${theme.baseSize.xxxl};
+        min-width: ${theme.baseSize.xl};
         font-family: ${theme.font.family};
         font-size: ${theme.font.sizes.s};
         font-weight: ${theme.font.weights.bold};
+        color: ${theme.colors.black};
+        background-color: ${theme.colors.backgroundNeutral};
     `}
-
-    ${({ theme, ui }) =>
-        ui === APP_BAR_BUTTON_UI.primary &&
-        css`
-            background-color: ${theme.colors.accent};
-        `}
-
-    ${({ theme, ui }) =>
-        ui === APP_BAR_BUTTON_UI.secondary &&
-        css`
-            background-color: ${theme.colors.warning};
-        `}
 
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #fff;
     border: 0;
     border-radius: 0;
     outline: 0;
@@ -59,6 +49,41 @@ export const AppBarButton = styled(({ text, ref, ...restProps }: AppBarButtonPro
         cursor: default;
         opacity: 0.5;
     }
+
+    ${({ theme, ui }) =>
+        ui === APP_BAR_BUTTON_UI.primary &&
+        css`
+            color: ${theme.colors.white};
+            background-color: ${theme.colors.primary};
+        `}
+
+    ${({ theme, ui }) =>
+        ui === APP_BAR_BUTTON_UI.secondary &&
+        css`
+            color: ${theme.colors.black};
+            background-color: ${theme.colors.secondary};
+        `}
+
+    ${({ theme, ui }) =>
+        ui === APP_BAR_BUTTON_UI.warn &&
+        css`
+            color: ${theme.colors.white};
+            background-color: ${theme.colors.warn};
+        `}
+
+    ${({ theme, ui }) =>
+        ui === APP_BAR_BUTTON_UI.accent &&
+        css`
+            color: ${theme.colors.white};
+            background-color: ${theme.colors.accent};
+        `}
+
+    ${({ theme, ui }) =>
+        ui === APP_BAR_BUTTON_UI.brand &&
+        css`
+            color: ${theme.colors.primary};
+            background-color: ${theme.colors.backgroundNeutral};
+        `}
 `;
 
 AppBarButton.displayName = 'AppBarButton';

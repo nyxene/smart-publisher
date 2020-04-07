@@ -10,12 +10,15 @@ const Root = styled.div<IconRootProps & { theme: Theme }>`
     flex-shrink: 0;
     justify-content: center;
     align-items: center;
-    width: ${({ theme, size = ICON_SIZE.m }) => theme.baseSize[size]};
-    height: ${({ theme, size = ICON_SIZE.m }) => theme.baseSize[size]};
     overflow: hidden;
 
-    ${(props) =>
-        props.disabled &&
+    ${({ theme, size = ICON_SIZE.m }) => css`
+        width: ${theme.baseSize[size]};
+        height: ${theme.baseSize[size]};
+    `};
+
+    ${({ disabled }) =>
+        disabled &&
         css`
             filter: grayscale(100%);
             opacity: 0.5;
