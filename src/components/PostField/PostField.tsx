@@ -1,21 +1,12 @@
-import React, { ChangeEvent, ReactElement, RefObject, useRef } from 'react';
-import styled from 'styled-components';
+import React from 'react';
+import styled, { css } from 'styled-components';
 
-import { useInput } from '../../hooks/useInput';
+import { Theme } from '~theme';
 
-interface PostFieldConfig {
-    post?: string;
-    height?: string;
-    disabled?: boolean;
-    readonly?: boolean;
-}
+import { PostFieldProps } from './types';
 
-interface PostFieldProps extends PostFieldConfig {
-    postRef?: RefObject<HTMLTextAreaElement>;
-    onChange?: (event: ChangeEvent<{ value: string }>) => void;
-}
-
-const PostFieldStyled = styled.div<{ height: string | undefined }>`
+const PostFieldStyled = styled.div<{ height?: string } & { theme: Theme }>`
+    width: 100%;
     height: 100%;
     background-color: #f5f5f5;
 
@@ -23,11 +14,16 @@ const PostFieldStyled = styled.div<{ height: string | undefined }>`
         display: block;
         padding: 0.5em;
         width: 100%;
-        height: ${({ height }) => (!!height ? height : '50vh')};
+        height: ${({ height }) => (!!height ? height : '100%')};
         resize: vertical;
 
-        font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman,
-            serif;
+        ${({ theme }) => css`
+            font-family: ${theme.font.family};
+            font-size: ${theme.font.sizes.l};
+            font-weight: ${theme.font.weights.normal};
+        `}
+
+        font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif;
         font-size: 1.2em;
         font-weight: 400;
         line-height: 1.4em;
@@ -46,67 +42,8 @@ const PostFieldStyled = styled.div<{ height: string | undefined }>`
     }
 `;
 
-export const PostField = ({
-    post = '',
-    postRef,
-    onChange,
-    disabled,
-    readonly,
-    height
-}: PostFieldProps): ReactElement => (
+export const PostField = ({ post = '', postRef, onChange, disabled, readonly, height }: PostFieldProps) => (
     <PostFieldStyled height={height}>
-        <textarea
-            ref={postRef}
-            value={post}
-            onChange={onChange}
-            disabled={disabled}
-            readOnly={readonly}
-        />
+        <textarea ref={postRef} value={post} onChange={onChange} disabled={disabled} readOnly={readonly} />
     </PostFieldStyled>
 );
-
-export const usePostField = ({
-    post: value = '',
-    disabled = false,
-    height = ''
-}: PostFieldConfig = {}) => {
-    const {
-        value: post,
-        onChange,
-        setValue: setPost,
-        disabled: disabledPost,
-        setDisabled: setDisabledPost,
-        readonly: readonlyPost,
-        setReadonly: setReadonlyPost,
-        clear: clearPost
-    } = useInput({ value, disabled });
-    const postRef: RefObject<HTMLTextAreaElement> = useRef(null);
-    const postField: ReactElement = PostField({
-        post,
-        postRef,
-        disabled: disabledPost,
-        readonly: readonlyPost,
-        onChange,
-        height
-    });
-    const copyToClipboard = () => {
-        if (postRef && postRef.current) {
-            postRef.current.select();
-            document.execCommand('copy');
-            postRef.current.setSelectionRange(0, 0);
-            postRef.current.blur();
-        }
-    };
-
-    return {
-        postField,
-        post,
-        setPost,
-        disabledPost,
-        setDisabledPost,
-        readonlyPost,
-        setReadonlyPost,
-        clearPost,
-        copyToClipboard
-    };
-};

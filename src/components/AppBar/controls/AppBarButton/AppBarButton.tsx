@@ -1,13 +1,20 @@
+import React from 'react';
 import styled, { css } from 'styled-components';
 
+import { clearProps } from '~core/helpers';
 import { Theme } from '~/theme';
 
-import { BUTTON_UI, ButtonProps } from './types';
+import { APP_BAR_BUTTON_UI, AppBarButtonProps } from './types';
 
-const BORDER_RADIUS = '2px';
-
-export const Button = styled.button<ButtonProps & { theme: Theme }>`
+export const AppBarButton = styled(({ text, ref, ...restProps }: AppBarButtonProps & { theme: Theme }) => {
+    return (
+        <button ref={ref} {...clearProps(restProps)}>
+            {text}
+        </button>
+    );
+})`
     position: relative;
+    height: 100%;
 
     display: inline-flex;
     align-items: center;
@@ -16,40 +23,30 @@ export const Button = styled.button<ButtonProps & { theme: Theme }>`
     ${({ theme }) => css`
         padding: 0 ${theme.baseSize.s};
         min-width: ${theme.baseSize.xxxl};
-        height: ${theme.baseSize.xl};
         font-family: ${theme.font.family};
         font-size: ${theme.font.sizes.s};
         font-weight: ${theme.font.weights.bold};
     `}
 
     ${({ theme, ui }) =>
-        ui === BUTTON_UI.primary &&
+        ui === APP_BAR_BUTTON_UI.primary &&
         css`
             background-color: ${theme.colors.accent};
         `}
 
     ${({ theme, ui }) =>
-        ui === BUTTON_UI.secondary &&
+        ui === APP_BAR_BUTTON_UI.secondary &&
         css`
             background-color: ${theme.colors.warning};
         `}
 
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
     color: #fff;
     border: 0;
+    border-radius: 0;
     outline: 0;
     cursor: pointer;
-
-    ${({
-        borderRadiusTopLeft = BORDER_RADIUS,
-        borderRadiusTopRight = BORDER_RADIUS,
-        borderRadiusBottomRight = BORDER_RADIUS,
-        borderRadiusBottomLeft = BORDER_RADIUS
-    }) => css`
-        border-radius: ${borderRadiusTopLeft} ${borderRadiusTopRight} ${borderRadiusBottomRight}
-            ${borderRadiusBottomLeft};
-    `}
 
     transition: background-color 0.2s 0.1s;
 
@@ -64,7 +61,7 @@ export const Button = styled.button<ButtonProps & { theme: Theme }>`
     }
 `;
 
-Button.displayName = 'Button';
-Button.defaultProps = {
-    ui: BUTTON_UI.primary
+AppBarButton.displayName = 'AppBarButton';
+AppBarButton.defaultProps = {
+    ui: APP_BAR_BUTTON_UI.primary
 };
