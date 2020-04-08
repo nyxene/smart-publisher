@@ -5,7 +5,12 @@ import { useInput } from '~core/form/useInput';
 import { PostField } from './PostField';
 import { UsePostFieldConfig } from './types';
 
-export const usePostField = ({ value: postValue = '', disabled = false }: UsePostFieldConfig = {}): [
+export const usePostField = ({
+    value: postValue = '',
+    label,
+    placeholder,
+    disabled = false
+}: UsePostFieldConfig = {}): [
     React.ReactElement,
     {
         value: string;
@@ -29,8 +34,10 @@ export const usePostField = ({ value: postValue = '', disabled = false }: UsePos
 
     const control = React.createElement(PostField, {
         value,
-        postRef,
+        label,
+        placeholder,
         disabled: disabledPost,
+        postRef,
         onChange
     });
 

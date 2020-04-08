@@ -1,6 +1,8 @@
 import React from 'react';
 
 export interface UsePostFieldConfig {
+    label?: string;
+    placeholder?: string;
     value?: string;
     disabled?: boolean;
 }

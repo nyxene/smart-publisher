@@ -24,7 +24,7 @@ const Root = styled.div<{ theme: Theme }>`
 
 Root.displayName = 'PostFieldRoot';
 
-export const PostField = ({ value = '', disabled, postRef, onChange }: PostFieldProps) => {
+export const PostField = ({ value = '', label, placeholder, disabled, postRef, onChange }: PostFieldProps) => {
     const debouncedPostLength = useDebounce<number>(value.length, 200);
 
     return (
@@ -32,12 +32,12 @@ export const PostField = ({ value = '', disabled, postRef, onChange }: PostField
             <FormControl
                 label={
                     <Text size={TEXT_SIZE.s} transform={TEXT_TRANSFORM.uppercase}>
-                        {'characters:'} <Counter value={debouncedPostLength} />
+                        {label} <Counter value={debouncedPostLength} />
                     </Text>
                 }
             >
                 <TextareaInput
-                    placeholder="Enter post…"
+                    placeholder={placeholder}
                     value={value}
                     disabled={disabled}
                     ref={postRef}

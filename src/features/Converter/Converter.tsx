@@ -28,7 +28,10 @@ export const Converter = () => {
     const [converted, setConverted] = useState<boolean>(false);
     const [covers, setCovers] = useState<CoverItemProps[]>([]);
 
-    const [postField, { value: post, setPost, clearPost, copyToClipboard }] = usePostField();
+    const [postField, { value: post, setPost, clearPost, copyToClipboard }] = usePostField({
+        label: 'Characters:',
+        placeholder: 'Enter post…'
+    });
 
     const hasCovers = converted && covers.length > 0;
 
