@@ -1,10 +1,8 @@
 import React from 'react';
 
 export interface UsePostFieldConfig {
-    post?: string;
-    height?: string;
+    value?: string;
     disabled?: boolean;
-    readonly?: boolean;
 }
 
 export interface PostFieldProps extends UsePostFieldConfig {

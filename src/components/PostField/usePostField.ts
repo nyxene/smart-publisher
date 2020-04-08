@@ -1,19 +1,17 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { useInput } from '~core/form/useInput';
 
 import { PostField } from './PostField';
 import { UsePostFieldConfig } from './types';
 
-export const usePostField = ({ post: value = '', disabled = false, height = '' }: UsePostFieldConfig = {}): [
+export const usePostField = ({ value: postValue = '', disabled = false }: UsePostFieldConfig = {}): [
     React.ReactElement,
     {
-        post: string;
+        value: string;
         setPost: (post: string) => void;
         disabledPost: boolean;
         setDisabledPost: (value: boolean) => void;
-        readonlyPost: boolean;
-        setReadonlyPost: (value: boolean) => void;
         clearPost: () => void;
         copyToClipboard: () => void;
     }
@@ -21,43 +19,37 @@ export const usePostField = ({ post: value = '', disabled = false, height = '' }
     const postRef = useRef<HTMLTextAreaElement | null>(null);
 
     const {
-        value: post,
+        value,
         onChange,
         setValue: setPost,
         disabled: disabledPost,
         setDisabled: setDisabledPost,
-        readonly: readonlyPost,
-        setReadonly: setReadonlyPost,
         clear: clearPost
-    } = useInput<string>({ value, disabled });
+    } = useInput<string>({ value: postValue, disabled });
 
     const control = React.createElement(PostField, {
-        post,
+        value,
         postRef,
         disabled: disabledPost,
-        readonly: readonlyPost,
-        onChange,
-        height
+        onChange
     });
 
-    const copyToClipboard = () => {
+    const copyToClipboard = useCallback(() => {
         if (postRef.current) {
             postRef.current.select();
             document.execCommand('copy');
             postRef.current.setSelectionRange(0, 0);
             postRef.current.blur();
         }
-    };
+    }, []);
 
     return [
         control,
         {
-            post: post || '',
+            value: value || '',
             setPost,
             disabledPost,
             setDisabledPost,
-            readonlyPost,
-            setReadonlyPost,
             clearPost,
             copyToClipboard
         }

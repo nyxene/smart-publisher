@@ -1,21 +1,42 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import { Theme } from '~theme';
 
 import { LoggedIn } from './LoggedIn';
 
-const Root = styled.div`
-    height: 100%;
-    width: 100%;
-    overflow-x: auto;
+const Root = styled.div<{ theme: Theme }>`
+    ${({ theme }) => css`
+        display: flex;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        background-color: ${theme.colors.backgroundGhost}};
+    `}
 `;
+
 Root.displayName = 'AppShellRoot';
 
-export const AppShell = () => {
-    return (
-        <Root id="main-container">
+const Content = styled.div<{ theme: Theme }>`
+    ${({ theme }) => css`
+        height: 100%;
+        width: 100%;
+        max-width: 1024px;
+        overflow-x: auto;
+        border-width: ${theme.borders.widths.base};
+        border-color: ${theme.colors.white};
+        border-style: solid;
+    `}
+`;
+
+Content.displayName = 'AppShellContent';
+
+export const AppShell = () => (
+    <Root data-test-id="appShell">
+        <Content>
             <LoggedIn />
-        </Root>
-    );
-};
+        </Content>
+    </Root>
+);
 
 AppShell.displayName = 'AppShell';

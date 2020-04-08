@@ -6,15 +6,15 @@ import { Theme } from '~/theme';
 import { ICON_SIZE, IconImageProps, IconProps, IconRootProps } from './types';
 
 const Root = styled.div<IconRootProps & { theme: Theme }>`
-    display: inline-flex;
-    flex-shrink: 0;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-
     ${({ theme, size = ICON_SIZE.m }) => css`
-        width: ${theme.baseSize[size]};
-        height: ${theme.baseSize[size]};
+        display: inline-flex;
+        flex-shrink: 0;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        width: ${theme.baseSizes[size]};
+        height: ${theme.baseSizes[size]};
     `};
 
     ${({ disabled }) =>
@@ -28,7 +28,7 @@ const Root = styled.div<IconRootProps & { theme: Theme }>`
 Root.displayName = 'IconRoot';
 
 const Image = styled.i<IconImageProps & { theme: Theme }>`
-    padding: ${({ theme, size = ICON_SIZE.m }) => `${theme.baseSize[size]} ${theme.baseSize[size]} 0 0`};
+    padding: ${({ theme, size = ICON_SIZE.m }) => `${theme.baseSizes[size]} ${theme.baseSizes[size]} 0 0`};
     display: block;
     width: 0;
     height: 0;

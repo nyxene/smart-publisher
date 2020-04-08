@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { APP_BAR_BUTTON_UI, AppBarButton } from '../AppBarButton';
 
 export const AppBarBrandLink = styled(AppBarButton).attrs({
-    ui: APP_BAR_BUTTON_UI.brand
+    ui: APP_BAR_BUTTON_UI.neutral
 })`
-    width: ${({ theme }) => theme.baseSize.xxl};
+    width: ${({ theme }) => theme.baseSizes.xxl};
 `;
 
 AppBarBrandLink.displayName = 'AppBarBrandLink';

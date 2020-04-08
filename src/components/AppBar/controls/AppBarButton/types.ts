@@ -5,7 +5,7 @@ export enum APP_BAR_BUTTON_UI {
     secondary = 'secondary',
     warn = 'warn',
     accent = 'accent',
-    brand = 'brand'
+    neutral = 'neutral'
 }
 
 export interface AppBarButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

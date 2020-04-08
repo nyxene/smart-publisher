@@ -6,49 +6,47 @@ import { Theme } from '~/theme';
 
 import { APP_BAR_BUTTON_UI, AppBarButtonProps } from './types';
 
-export const AppBarButton = styled(({ text, ref, ...restProps }: AppBarButtonProps & { theme: Theme }) => {
-    return (
-        <button ref={ref} {...clearProps(restProps)}>
-            {text}
-        </button>
-    );
-})`
-    position: relative;
-    margin: 0;
-    height: 100%;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
+export const AppBarButton = styled(({ text, ref, ...restProps }: AppBarButtonProps & { theme: Theme }) => (
+    <button ref={ref} {...clearProps(restProps)}>
+        {text}
+    </button>
+))`
     ${({ theme }) => css`
-        padding: 0 ${theme.baseSize.s};
-        min-width: ${theme.baseSize.xl};
+        position: relative;
+        margin: 0;
+        height: 100%;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0 ${theme.baseSizes.s};
+        min-width: ${theme.baseSizes.xl};
         font-family: ${theme.font.family};
         font-size: ${theme.font.sizes.s};
         font-weight: ${theme.font.weights.bold};
         color: ${theme.colors.black};
         background-color: ${theme.colors.backgroundNeutral};
-    `}
 
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border: 0;
-    border-radius: 0;
-    outline: 0;
-    cursor: pointer;
-
-    transition: background-color 0.2s 0.1s;
-
-    &:hover:not([disabled]) {
-        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+        border: 0;
+        border-radius: 0;
+        outline: 0;
         cursor: pointer;
-    }
 
-    &[disabled] {
-        cursor: default;
-        opacity: 0.5;
-    }
+        transition: background-color 0.2s 0.1s;
+
+        &:hover:not([disabled]) {
+            opacity: 0.9;
+            cursor: pointer;
+        }
+
+        &[disabled] {
+            cursor: default;
+            opacity: 0.5;
+        }
+    `}
 
     ${({ theme, ui }) =>
         ui === APP_BAR_BUTTON_UI.primary &&
@@ -79,7 +77,7 @@ export const AppBarButton = styled(({ text, ref, ...restProps }: AppBarButtonPro
         `}
 
     ${({ theme, ui }) =>
-        ui === APP_BAR_BUTTON_UI.brand &&
+        ui === APP_BAR_BUTTON_UI.neutral &&
         css`
             color: ${theme.colors.primary};
             background-color: ${theme.colors.backgroundNeutral};
