@@ -1,29 +1,17 @@
-import React, { ReactElement } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 
-import { MAIN_TEXT_MAX_LENGTH } from '../../constants';
+import { Text, TEXT_COLOR, TEXT_SIZE } from '~components';
+import { MAIN_TEXT_MAX_LENGTH } from '~core/constants';
 
-interface CounterProps {
-    length: number;
-}
+import { CounterProps } from './types';
 
-const CounterStyled = styled.div`
-    color: #000;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-`;
-
-const CounterCurrentLength = styled.span<{ length: number }>`
-    color: ${({ length }) =>
-        length > MAIN_TEXT_MAX_LENGTH ? '#cb292c' : '#000'};
-`;
-
-const Counter = ({ length }: CounterProps): ReactElement => (
-    <CounterStyled>
-        <CounterCurrentLength length={length}>{length}</CounterCurrentLength> /{' '}
-        {MAIN_TEXT_MAX_LENGTH}
-    </CounterStyled>
+export const Counter = ({ value, maximum = MAIN_TEXT_MAX_LENGTH }: CounterProps) => (
+    <Text component="span" size={TEXT_SIZE.s}>
+        <Text component="span" size={TEXT_SIZE.inherit} color={value > maximum ? TEXT_COLOR.accent : TEXT_COLOR.black}>
+            {value}
+        </Text>
+        {`/${maximum}`}
+    </Text>
 );
 
-export default Counter;
+Counter.displayName = 'Counter';

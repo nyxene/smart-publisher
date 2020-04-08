@@ -1,0 +1,1 @@
+export { FromLabel } from './FromLabel';

@@ -1,8 +1,9 @@
 {
     "name": "smart-publisher",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "author": "Evgeniy Kovrov <evgeniy@nyxene.com>",
     "license": "MIT",
+    "homepage": "https://nyxene.github.io/smart-publisher/",
     "repository": {
         "type": "git",
         "url": "https://github.com/nyxene/smart-publisher.git"
@@ -13,22 +14,31 @@
         "react",
         "nodejs"
     ],
-    "homepage": "https://nyxene.github.io/smart-publisher/",
-    "scripts": {
-        "start": "parcel serve public/index.html -d build",
-        "clean": "rimraf build/*",
-        "build": "cross-env NODE_ENV=production parcel build public/index.html --public-url ./ -d build",
-        "test": "react-scripts test",
-        "lint": "node ./node_modules/eslint/bin/eslint.js --config .eslintrc.json --ext .js,.ts,.tsx src",
-        "format": "prettier --write \"{src,server}/**/*.{js,ts,tsx}\"",
-        "server": "cross-env nodemon ./server/app.js",
-        "server:test": "jest ./server/",
-        "ci:lint": "node ./node_modules/eslint/bin/eslint.js --config .eslintrc.json --ext .js,.ts,.tsx --format node_modules/eslint-teamcity/index.js src",
-        "ci:format": "prettier --check \"{src,server}/**/*.{js,ts,tsx}\""
+    "engines": {
+        "node": ">=12.0.0"
     },
-    "eslintConfig": {
-        "extends": [
-            "react-app"
+    "scripts": {
+        "start": "parcel serve ./src/index.html -d build --no-cache",
+        "clean": "rimraf build/*",
+        "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit -w",
+        "build": "cross-env NODE_ENV=production parcel build ./src/index.html --public-url ./ -d ./build --no-source-maps --no-cache",
+        "test": "jest --watch",
+        "test:ci": "cross-env jest --coverage",
+        "lint": "eslint --quiet --ext .ts,.tsx ./src",
+        "lint:ci": "cross-env yarn run lint",
+        "format": "prettier --write \"**/*.{ts,tsx}\"",
+        "format:ci": "prettier --check \"/**/*.{ts,tsx}\""
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.(ts|tsx|json)": [
+            "yarn run format",
+            "git add"
         ]
     },
     "browserslist": {
@@ -44,37 +54,36 @@
         ]
     },
     "dependencies": {
-        "@types/jest": "24.0.13",
-        "@types/node": "12.0.4",
-        "@types/react": "16.8.19",
-        "@types/react-dom": "16.8.4",
-        "@types/styled-components": "4.1.15",
         "bunyan": "1.8.12",
-        "canvas": "2.5.0",
-        "cross-env": "5.2.0",
-        "dotenv": "8.0.0",
-        "nodemon": "1.19.1",
-        "react": "16.8.6",
-        "react-dom": "16.8.6",
-        "restify": "8.3.2",
-        "styled-components": "4.2.1",
-        "typescript": "3.5.1",
-        "typograf": "6.8.2"
+        "cross-env": "7.0.2",
+        "dotenv": "8.2.0",
+        "nodemon": "2.0.2",
+        "react": "16.13.1",
+        "react-dom": "16.13.1",
+        "restify": "8.5.1",
+        "styled-components": "5.0.1",
+        "typescript": "3.8.3",
+        "typograf": "6.11.0"
     },
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "1.9.0",
-        "@typescript-eslint/parser": "1.9.0",
-        "eslint": "5.16.0",
-        "eslint-config-airbnb": "17.1.0",
-        "eslint-config-prettier": "4.3.0",
-        "eslint-config-react-app": "4.0.1",
-        "eslint-plugin-import": "2.17.3",
-        "eslint-plugin-jsx-a11y": "6.2.1",
-        "eslint-plugin-prettier": "3.1.0",
-        "eslint-plugin-react": "7.13.0",
-        "jest": "24.8.0",
-        "parcel-bundler": "1.12.3",
-        "prettier": "1.17.1",
-        "rimraf": "3.0.0"
+        "@types/jest": "25.2.1",
+        "@types/node": "13.11.0",
+        "@types/react": "16.9.32",
+        "@types/react-dom": "16.9.6",
+        "@types/styled-components": "5.0.1",
+        "@typescript-eslint/eslint-plugin": "2.26.0",
+        "@typescript-eslint/parser": "2.26.0",
+        "eslint": "6.8.0",
+        "eslint-config-prettier": "6.10.1",
+        "eslint-plugin-no-only-tests": "2.4.0",
+        "eslint-plugin-node": "11.1.0",
+        "eslint-plugin-prettier": "3.1.2",
+        "eslint-plugin-react": "7.19.0",
+        "husky": "4.2.3",
+        "jest": "25.2.7",
+        "lint-staged": "10.1.2",
+        "parcel": "1.12.4",
+        "prettier": "2.0.4",
+        "rimraf": "3.0.2"
     }
 }

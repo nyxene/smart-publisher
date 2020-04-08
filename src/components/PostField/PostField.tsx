@@ -1,112 +1,51 @@
-import React, { ChangeEvent, ReactElement, RefObject, useRef } from 'react';
-import styled from 'styled-components';
+import React from 'react';
+import styled, { css } from 'styled-components';
 
-import { useInput } from '../../hooks/useInput';
+import { Counter, FormControl, Text, TEXT_SIZE, TEXT_TRANSFORM, TextareaInput } from '~components';
+import { useDebounce } from '~core/hooks';
+import { Theme } from '~theme';
 
-interface PostFieldConfig {
-    post?: string;
-    height?: string;
-    disabled?: boolean;
-    readonly?: boolean;
-}
+import { PostFieldProps } from './types';
 
-interface PostFieldProps extends PostFieldConfig {
-    postRef?: RefObject<HTMLTextAreaElement>;
-    onChange?: (event: ChangeEvent<{ value: string }>) => void;
-}
-
-const PostFieldStyled = styled.div<{ height: string | undefined }>`
-    height: 100%;
-    background-color: #f5f5f5;
-
-    textarea {
-        display: block;
-        padding: 0.5em;
+const Root = styled.div<{ theme: Theme }>`
+    ${({ theme }) => css`
+        display: flex;
         width: 100%;
-        height: ${({ height }) => (!!height ? height : '50vh')};
-        resize: vertical;
+        height: 100%;
+        border-top-width: ${theme.borders.widths.base};
+        border-top-color: ${theme.colors.white};
+        border-style: solid;
 
-        font-family: Premiera, Cambria, Roboto Slab, Georgia, Times New Roman,
-            serif;
-        font-size: 1.2em;
-        font-weight: 400;
-        line-height: 1.4em;
-        letter-spacing: -0.005em;
-
-        border: 2px solid #d5d5d5;
-        border-radius: 2px;
-
-        transition: border-color 0.2s 0.1s;
-
-        &:focus,
-        &:active {
-            border-color: #27982b;
-            outline: 0;
+        ${TextareaInput} {
+            flex: 1;
         }
-    }
+    `}
 `;
 
-export const PostField = ({
-    post = '',
-    postRef,
-    onChange,
-    disabled,
-    readonly,
-    height
-}: PostFieldProps): ReactElement => (
-    <PostFieldStyled height={height}>
-        <textarea
-            ref={postRef}
-            value={post}
-            onChange={onChange}
-            disabled={disabled}
-            readOnly={readonly}
-        />
-    </PostFieldStyled>
-);
+Root.displayName = 'PostFieldRoot';
 
-export const usePostField = ({
-    post: value = '',
-    disabled = false,
-    height = ''
-}: PostFieldConfig = {}) => {
-    const {
-        value: post,
-        onChange,
-        setValue: setPost,
-        disabled: disabledPost,
-        setDisabled: setDisabledPost,
-        readonly: readonlyPost,
-        setReadonly: setReadonlyPost,
-        clear: clearPost
-    } = useInput({ value, disabled });
-    const postRef: RefObject<HTMLTextAreaElement> = useRef(null);
-    const postField: ReactElement = PostField({
-        post,
-        postRef,
-        disabled: disabledPost,
-        readonly: readonlyPost,
-        onChange,
-        height
-    });
-    const copyToClipboard = () => {
-        if (postRef && postRef.current) {
-            postRef.current.select();
-            document.execCommand('copy');
-            postRef.current.setSelectionRange(0, 0);
-            postRef.current.blur();
-        }
-    };
+export const PostField = ({ value = '', label, placeholder, disabled, postRef, onChange }: PostFieldProps) => {
+    const debouncedPostLength = useDebounce<number>(value.length, 200);
 
-    return {
-        postField,
-        post,
-        setPost,
-        disabledPost,
-        setDisabledPost,
-        readonlyPost,
-        setReadonlyPost,
-        clearPost,
-        copyToClipboard
-    };
+    return (
+        <Root>
+            <FormControl
+                label={
+                    <Text size={TEXT_SIZE.s} transform={TEXT_TRANSFORM.uppercase}>
+                        {label} <Counter value={debouncedPostLength} />
+                    </Text>
+                }
+            >
+                <TextareaInput
+                    placeholder={placeholder}
+                    value={value}
+                    disabled={disabled}
+                    ref={postRef}
+                    onChange={onChange}
+                />
+            </FormControl>
+        </Root>
+    );
 };
+
+PostField.displayName = 'PostField';
