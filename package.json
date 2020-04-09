@@ -18,7 +18,7 @@
         "node": ">=12.0.0"
     },
     "scripts": {
-        "start": "parcel serve ./src/index.html -d build --no-cache",
+        "start": "parcel serve ./src/index.html -d build",
         "clean": "rimraf build/*",
         "tsc": "tsc --noEmit",
         "tsc:watch": "tsc --noEmit -w",

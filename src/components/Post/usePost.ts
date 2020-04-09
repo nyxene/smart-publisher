@@ -1,16 +1,18 @@
-import React, { useCallback, useRef } from 'react';
+import React from 'react';
 
 import { useInput } from '~core/form/useInput';
 
-import { PostField } from './PostField';
-import { UsePostFieldConfig } from './types';
+import { Post } from './Post';
+import { UsePostConfig } from './types';
 
-export const usePostField = ({
+export const usePost = ({
     value: postValue = '',
     label,
     placeholder,
-    disabled = false
-}: UsePostFieldConfig = {}): [
+    disabled = false,
+    mainTextMaxLength,
+    textSeparator
+}: UsePostConfig = {}): [
     React.ReactElement,
     {
         value: string;
@@ -21,7 +23,7 @@ export const usePostField = ({
         copyToClipboard: () => void;
     }
 ] => {
-    const postRef = useRef<HTMLTextAreaElement | null>(null);
+    const postRef = React.useRef<HTMLTextAreaElement | null>(null);
 
     const {
         value,
@@ -32,16 +34,18 @@ export const usePostField = ({
         clear: clearPost
     } = useInput<string>({ value: postValue, disabled });
 
-    const control = React.createElement(PostField, {
+    const control = React.createElement(Post, {
         value,
         label,
         placeholder,
         disabled: disabledPost,
+        textSeparator,
+        mainTextMaxLength,
         postRef,
         onChange
     });
 
-    const copyToClipboard = useCallback(() => {
+    const copyToClipboard = React.useCallback(() => {
         if (postRef.current) {
             postRef.current.select();
             document.execCommand('copy');

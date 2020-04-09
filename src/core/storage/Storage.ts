@@ -15,12 +15,11 @@ export class Storage implements AppStorage {
         this.storage.setItem(name, stringValue);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public getItem<TOutput = any>(name: string, initialValue?: TOutput): TOutput | string | null {
+    public getItem<TOutput = string>(name: string): TOutput | string | null {
         const item = this.storage.getItem(name);
 
         if (!item) {
-            return initialValue || null;
+            return null;
         }
 
         try {

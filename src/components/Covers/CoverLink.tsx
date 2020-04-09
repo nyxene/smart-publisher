@@ -13,7 +13,7 @@ export const CoverLink = styled.a<{ theme: Theme }>`
 
         transition: opacity 0.2s 0.1s;
 
-        &::after {
+        &:after {
             content: '🔗';
             position: absolute;
             top: 0;
@@ -24,13 +24,13 @@ export const CoverLink = styled.a<{ theme: Theme }>`
             justify-content: center;
 
             font-size: ${theme.font.sizes.s};
-            width: ${theme.baseSizes.l};
-            height: ${theme.baseSizes.l};
+            width: ${theme.sizes.l};
+            height: ${theme.sizes.l};
 
             background-color: ${theme.colors.backgroundNeutral};
         }
 
-        &:hover::after {
+        &:hover:after {
             opacity: 0.9;
         }
     `}

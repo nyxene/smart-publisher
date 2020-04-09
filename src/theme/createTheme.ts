@@ -3,8 +3,9 @@ import { GENERAL, GRAY, GREEN, ORANGE, RED, YELLOW } from '~theme/colors';
 import { Theme } from './types';
 
 export const createTheme = (isMobile = false): Theme => ({
-    baseSizes: {
-        none: '0', // 0
+    sizes: {
+        none: '0',
+        thin: '1px',
         xxs: '0.125rem', // 2px
         xs: '0.25rem', // 4px
         s: '0.5rem', // 8px

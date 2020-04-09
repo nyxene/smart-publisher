@@ -4,9 +4,9 @@ import { Theme } from '~theme';
 
 export const CoverImage = styled.div<{ theme: Theme; dataImage: string }>`
     ${({ theme, dataImage }) => css`
-        min-width: ${theme.baseSizes.xl};
+        min-width: ${theme.sizes.xl};
         width: auto;
-        height: ${theme.baseSizes.xxxl};
+        height: ${theme.sizes.xxxl};
 
         background-color: transparent;
         background-image: ${typeof dataImage === 'string' ? `url(${dataImage})` : ''};

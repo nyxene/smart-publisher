@@ -5,5 +5,5 @@ export * from './Covers';
 export * from './Form';
 export * from './Icon';
 export * from './Panel';
-export * from './PostField';
+export * from './Post';
 export * from './Text';

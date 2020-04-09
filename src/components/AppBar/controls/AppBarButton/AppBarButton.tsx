@@ -1,13 +1,15 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
+import { Icon } from '~components';
 import { clearProps } from '~core/helpers';
 import { Theme } from '~/theme';
 
 import { APP_BAR_BUTTON_UI, AppBarButtonProps } from './types';
 
-export const AppBarButton = styled(({ text, ref, ...restProps }: AppBarButtonProps & { theme: Theme }) => (
+export const AppBarButton = styled(({ text, icon, ref, ...restProps }: AppBarButtonProps & { theme: Theme }) => (
     <button ref={ref} {...clearProps(restProps)}>
+        {icon && <Icon src={icon} />}
         {text}
     </button>
 ))`
@@ -20,8 +22,8 @@ export const AppBarButton = styled(({ text, ref, ...restProps }: AppBarButtonPro
         align-items: center;
         justify-content: center;
 
-        padding: 0 ${theme.baseSizes.s};
-        min-width: ${theme.baseSizes.xl};
+        padding: 0 ${theme.sizes.s};
+        min-width: ${theme.sizes.xxl};
         font-family: ${theme.font.family};
         font-size: ${theme.font.sizes.s};
         font-weight: ${theme.font.weights.bold};

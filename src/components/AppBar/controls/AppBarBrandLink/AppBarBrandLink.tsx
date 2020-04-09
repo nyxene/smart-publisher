@@ -5,7 +5,7 @@ import { APP_BAR_BUTTON_UI, AppBarButton } from '../AppBarButton';
 export const AppBarBrandLink = styled(AppBarButton).attrs({
     ui: APP_BAR_BUTTON_UI.neutral
 })`
-    width: ${({ theme }) => theme.baseSizes.xxl};
+    width: ${({ theme }) => theme.sizes.xxl};
 `;
 
 AppBarBrandLink.displayName = 'AppBarBrandLink';

@@ -48,4 +48,7 @@ export const isMobile = () => {
     return result;
 };
 
-export const getKey = () => Math.random().toString(16);
+export const getKey = (): string => Math.random().toString(16);
+
+export const getNumber = (value: string | number = '', defaultValue = 0): number =>
+    Number.isNaN(+value) ? defaultValue : Number(value);
