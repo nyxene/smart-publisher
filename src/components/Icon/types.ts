@@ -1,3 +1,5 @@
+import React from 'react';
+
 export enum ICON_SIZE {
     s = 's',
     m = 'm',
@@ -18,7 +20,7 @@ export interface IconImageProps {
 }
 
 export interface IconProps {
-    src: string;
+    src: React.ReactElement | string;
     size?: ICON_SIZE;
     disabled?: boolean;
 }

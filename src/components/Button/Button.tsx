@@ -1,19 +1,27 @@
+import React from 'react';
 import styled, { css } from 'styled-components';
 
+import { Icon } from '~components';
+import { clearProps } from '~core/helpers';
 import { Theme } from '~/theme';
 
 import { BUTTON_UI, ButtonProps } from './types';
 
-export const Button = styled.button<ButtonProps & { theme: Theme }>`
+export const Button = styled(({ children, icon, ref, ...restProps }: ButtonProps & { theme: Theme }) => (
+    <button ref={ref} {...clearProps(restProps)}>
+        {icon && <Icon src={icon} />}
+        {children}
+    </button>
+))`
     ${({ theme, borderRadiusTopLeft, borderRadiusTopRight, borderRadiusBottomRight, borderRadiusBottomLeft }) => css`
         position: relative;
 
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 0 ${theme.baseSizes.s};
-        min-width: ${theme.baseSizes.xxxl};
-        height: ${theme.baseSizes.xl};
+        padding: 0 ${theme.sizes.m};
+        min-width: ${theme.sizes.xl};
+        height: ${theme.sizes.xl};
         font-family: ${theme.font.family};
         font-size: ${theme.font.sizes.s};
         font-weight: ${theme.font.weights.bold};
@@ -67,6 +75,13 @@ export const Button = styled.button<ButtonProps & { theme: Theme }>`
         css`
             color: ${theme.colors.white};
             background-color: ${theme.colors.accent};
+        `}
+
+    ${({ theme, ui }) =>
+        ui === BUTTON_UI.neutral &&
+        css`
+            color: ${theme.colors.primary};
+            background-color: ${theme.colors.backgroundNeutral};
         `}
 `;
 

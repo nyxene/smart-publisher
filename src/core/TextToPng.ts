@@ -60,7 +60,6 @@ export class TextToPng {
     public render(text: string): string[] {
         const textBlocks = this.getTextBlocks(text);
 
-        // TODO Think of a more effective solution
         return textBlocks.map((textBlock: string[]): string => {
             const canvas = createCanvas(SIZE_WIDTH, SIZE_HEIGHT);
             const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');

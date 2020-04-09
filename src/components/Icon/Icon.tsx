@@ -13,9 +13,15 @@ const Root = styled.div<IconRootProps & { theme: Theme }>`
         align-items: center;
         overflow: hidden;
 
-        width: ${theme.baseSizes[size]};
-        height: ${theme.baseSizes[size]};
+        width: ${theme.sizes[size]};
+        height: ${theme.sizes[size]};
     `};
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 
     ${({ disabled }) =>
         disabled &&
@@ -28,25 +34,30 @@ const Root = styled.div<IconRootProps & { theme: Theme }>`
 Root.displayName = 'IconRoot';
 
 const Image = styled.i<IconImageProps & { theme: Theme }>`
-    padding: ${({ theme, size = ICON_SIZE.m }) => `${theme.baseSizes[size]} ${theme.baseSizes[size]} 0 0`};
-    display: block;
-    width: 0;
-    height: 0;
+    ${({ theme, src, size = ICON_SIZE.m }) => css`
+        display: block;
+        padding: ${`${theme.sizes[size]} ${theme.sizes[size]} 0 0`};
+        width: 0;
+        height: 0;
+        overflow: hidden;
 
-    background-color: transparent;
-    background-image: ${({ src }) => (typeof src === 'string' ? `url(${src})` : '')};
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-
-    overflow: hidden;
+        background-color: transparent;
+        background-image: ${typeof src === 'string' ? `url(${src})` : ''};
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
+    `}
 `;
 
 Image.displayName = 'IconImage';
 
 export const Icon = ({ src, size, disabled }: IconProps) => (
     <Root disabled={disabled} size={size}>
-        <Image src={src} size={size} />
+        {typeof src === 'string' ? (
+            <Image src={src} size={size} />
+        ) : (
+            <>{React.isValidElement(src) ? React.cloneElement(src) : null}</>
+        )}
     </Root>
 );
 

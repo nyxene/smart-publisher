@@ -1,17 +1,17 @@
-import { useCallback, useState } from 'react';
+import React from 'react';
 
 import { UseInputOutput, UseInputProps } from './types';
 
-export const useInput = <TValue>({
+export const useInput = <TValue = string>({
     value: initialValue,
     disabled: initialDisabled = false,
     readonly: initialReadonly = false,
     valueKey = 'value'
 }: UseInputProps<TValue>): UseInputOutput<TValue> => {
-    const [value, setValue] = useState<TValue | undefined>(initialValue);
-    const [disabled, setDisabled] = useState<boolean>(initialDisabled);
-    const [readonly, setReadonly] = useState<boolean>(initialReadonly);
-    const onChange = useCallback((e) => setValue(e.target[valueKey]), [valueKey]);
+    const [value, setValue] = React.useState<TValue | undefined>(initialValue);
+    const [disabled, setDisabled] = React.useState<boolean>(initialDisabled);
+    const [readonly, setReadonly] = React.useState<boolean>(initialReadonly);
+    const onChange = React.useCallback((e) => setValue(e.target[valueKey]), [valueKey]);
 
     return {
         value,
@@ -21,6 +21,12 @@ export const useInput = <TValue>({
         readonly,
         setReadonly,
         onChange,
-        clear: useCallback(() => setValue(undefined), [])
+        clear: React.useCallback(() => setValue(undefined), []),
+        input: {
+            value,
+            disabled,
+            readOnly: readonly,
+            onChange
+        }
     };
 };

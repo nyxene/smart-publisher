@@ -1,11 +1,12 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { Counter, FormControl, Text, TEXT_SIZE, TEXT_TRANSFORM, TextareaInput } from '~components';
+import { Counter, FormControl, TextareaInput } from '~components';
+import { MAIN_TEXT_MAX_LENGTH, TEXT_SEPARATOR } from '~core/constants';
 import { useDebounce } from '~core/hooks';
 import { Theme } from '~theme';
 
-import { PostFieldProps } from './types';
+import { PostProps } from './types';
 
 const Root = styled.div<{ theme: Theme }>`
     ${({ theme }) => css`
@@ -17,26 +18,38 @@ const Root = styled.div<{ theme: Theme }>`
         border-style: solid;
 
         ${TextareaInput} {
-            flex: 1;
+            flex-grow: 1;
         }
     `}
 `;
 
-Root.displayName = 'PostFieldRoot';
+Root.displayName = 'PostRoot';
 
-export const PostField = ({ value = '', label, placeholder, disabled, postRef, onChange }: PostFieldProps) => {
-    const debouncedPostLength = useDebounce<number>(value.length, 200);
+export const Post = ({
+    value = '',
+    label,
+    placeholder,
+    disabled,
+    textSeparator = TEXT_SEPARATOR,
+    mainTextMaxLength = MAIN_TEXT_MAX_LENGTH,
+    postRef,
+    onChange
+}: PostProps) => {
+    const [mainText] = value?.split(textSeparator) ?? [''];
+    const mainTextLength = mainText.trim().length;
+    const debouncedPostLength = useDebounce<number>(mainTextLength, 200);
 
     return (
         <Root>
             <FormControl
                 label={
-                    <Text size={TEXT_SIZE.s} transform={TEXT_TRANSFORM.uppercase}>
-                        {label} <Counter value={debouncedPostLength} />
-                    </Text>
+                    <>
+                        {label} <Counter value={debouncedPostLength} maximum={mainTextMaxLength} />
+                    </>
                 }
             >
                 <TextareaInput
+                    data-test-id="postInput"
                     placeholder={placeholder}
                     value={value}
                     disabled={disabled}
@@ -48,4 +61,4 @@ export const PostField = ({ value = '', label, placeholder, disabled, postRef, o
     );
 };
 
-PostField.displayName = 'PostField';
+Post.displayName = 'Post';

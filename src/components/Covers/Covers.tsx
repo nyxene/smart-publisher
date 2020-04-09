@@ -11,7 +11,7 @@ const Root = styled.div<{ theme: Theme }>`
         display: flex;
         flex-wrap: wrap;
         width: 100%;
-        min-height: ${theme.baseSizes.xxxl};
+        min-height: ${theme.sizes.xxxl};
     `}
 `;
 

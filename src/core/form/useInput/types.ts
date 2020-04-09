@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface UseInputProps<TValue> {
     value?: TValue;
     valueKey?: string;
@@ -12,6 +14,12 @@ export interface UseInputOutput<TValue> {
     setDisabled: (value: boolean) => void;
     readonly: boolean;
     setReadonly: (value: boolean) => void;
-    onChange: <TChangeEvent>(e: TChangeEvent) => void;
+    onChange: <TChangeEvent = React.ChangeEvent<HTMLInputElement>>(e: TChangeEvent) => void;
     clear: () => void;
+    input: {
+        value?: TValue;
+        disabled: boolean;
+        readOnly: boolean;
+        onChange: <TChangeEvent = React.ChangeEvent<HTMLInputElement>>(e: TChangeEvent) => void;
+    };
 }

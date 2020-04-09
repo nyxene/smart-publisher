@@ -4,8 +4,7 @@ import { Theme } from '~theme';
 
 export const Panel = styled.div<{ theme: Theme }>`
     ${({ theme }) => css`
-        width: 100%;
-        padding: ${theme.baseSizes.xs} ${theme.baseSizes.s};
+        padding: ${theme.sizes.xs} ${theme.sizes.s};
         background-color: ${theme.colors.backgroundNeutral};
     `}
 `;

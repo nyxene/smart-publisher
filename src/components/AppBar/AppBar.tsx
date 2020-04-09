@@ -15,10 +15,10 @@ const Root = styled.div<{ theme: Theme }>`
         flex-wrap: nowrap;
         align-items: center;
         width: 100%;
-        height: ${theme.baseSizes.xxl};
+        height: ${theme.sizes.xxl};
         background-color: ${theme.colors.backgroundNeutral};
 
-        & > *:not(:first-child) {
+        > *:not(:first-child) {
             border-left-width: ${theme.borders.widths.base};
             border-left-color: ${theme.colors.white};
             border-style: solid;

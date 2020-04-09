@@ -9,8 +9,9 @@ const Root = styled.div<{ theme: Theme }>`
     ${({ theme }) => css`
         display: flex;
         justify-content: center;
-        height: 100%;
+        min-width: 320px;
         width: 100%;
+        height: 100%;
         background-color: ${theme.colors.backgroundGhost}};
     `}
 `;
@@ -19,9 +20,9 @@ Root.displayName = 'AppShellRoot';
 
 const Content = styled.div<{ theme: Theme }>`
     ${({ theme }) => css`
-        height: 100%;
         width: 100%;
         max-width: 1024px;
+        height: 100%;
         overflow-x: auto;
         border-width: ${theme.borders.widths.base};
         border-color: ${theme.colors.white};
