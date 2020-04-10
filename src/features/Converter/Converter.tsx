@@ -24,7 +24,7 @@ Root.displayName = 'ConverterRoot';
 
 const Content = styled.div`
     display: flex;
-    flex-grow: 1;
+    flex: 1;
 
     width: 100%;
 `;
