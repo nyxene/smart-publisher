@@ -1,14 +1,9 @@
-import { MAIN_TEXT_MAX_LENGTH, TEXT_SEPARATOR } from '~core/constants';
+import { TEXT_SEPARATOR } from '~core/constants';
 import { SeparateConditionResult } from '~core/TextConverter';
 
-export const separateCondition = (
-    mainTextMaxLength: number = MAIN_TEXT_MAX_LENGTH,
-    textSeparator: string = TEXT_SEPARATOR
-) => (mainText: string): SeparateConditionResult => {
-    if (mainText.length <= mainTextMaxLength) {
-        return { mainText };
-    }
-
+export const separateCondition = (textSeparator: string = TEXT_SEPARATOR) => (
+    mainText: string
+): SeparateConditionResult => {
     const [newMainText, otherText] = mainText.split(textSeparator);
 
     return {

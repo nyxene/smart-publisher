@@ -10,7 +10,6 @@ export const usePost = ({
     label,
     placeholder,
     disabled = false,
-    mainTextMaxLength,
     textSeparator
 }: UsePostConfig = {}): [
     React.ReactElement,
@@ -40,7 +39,6 @@ export const usePost = ({
         placeholder,
         disabled: disabledPost,
         textSeparator,
-        mainTextMaxLength,
         postRef,
         onChange
     });
