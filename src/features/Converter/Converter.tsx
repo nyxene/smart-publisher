@@ -38,9 +38,8 @@ export const Converter = () => {
     const [covers, setCovers] = React.useState<CoverItemProps[]>([]);
 
     const [postControl, { value: post, setPost, setDisabledPost, clearPost, copyToClipboard }] = usePost({
-        label: 'Characters:',
+        label: 'Characters before split:',
         placeholder: 'Enter post…',
-        mainTextMaxLength: config.mainTextMaxLength,
         textSeparator: config.textSeparator
     });
 
@@ -66,7 +65,7 @@ export const Converter = () => {
             const converter = new TextConverter(
                 config.textColor,
                 config.bgColor,
-                separateCondition(config.mainTextMaxLength, config.textSeparator)
+                separateCondition(config.textSeparator)
             );
             const { mainText: convertedPost, covers } = converter.run(post);
 

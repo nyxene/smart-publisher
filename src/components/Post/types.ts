@@ -5,7 +5,6 @@ export interface UsePostConfig {
     placeholder?: string;
     value?: string;
     disabled?: boolean;
-    mainTextMaxLength?: number;
     textSeparator?: string;
 }
 
@@ -14,7 +13,6 @@ export interface PostProps {
     placeholder?: string;
     value?: string;
     disabled?: boolean;
-    mainTextMaxLength?: number;
     textSeparator?: string;
     onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     postRef?: React.RefObject<HTMLTextAreaElement>;

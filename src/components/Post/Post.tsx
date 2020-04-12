@@ -31,7 +31,6 @@ export const Post = ({
     placeholder,
     disabled,
     textSeparator = TEXT_SEPARATOR,
-    mainTextMaxLength = MAIN_TEXT_MAX_LENGTH,
     postRef,
     onChange
 }: PostProps) => {
@@ -41,13 +40,7 @@ export const Post = ({
 
     return (
         <Root>
-            <FormControl
-                label={
-                    <>
-                        {label} <Counter value={debouncedPostLength} maximum={mainTextMaxLength} />
-                    </>
-                }
-            >
+            <FormControl label={<>{`${label} ${debouncedPostLength}`}</>}>
                 <TextareaInput
                     data-test-id="postInput"
                     placeholder={placeholder}

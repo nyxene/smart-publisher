@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 
 import { Button, BUTTON_UI, FormControl, FormGroup, TextInput } from '~components';
 import { INITIAL_APP_CONFIG } from '~core/constants';
-import { getNumber } from '~core/helpers';
 import { appStorage } from '~core/storage';
 import { useInput } from '~core/form/useInput';
 import { Theme } from '~theme';
@@ -37,7 +36,7 @@ const Actions = styled.div<{ theme: Theme }>`
 
 Actions.displayName = 'ConfigActions';
 
-export const Config = ({ textColor, bgColor, textSeparator, mainTextMaxLength, onDone }: ConfigProps) => {
+export const Config = ({ textColor, bgColor, textSeparator, onDone }: ConfigProps) => {
     let savedConfig = appStorage.getItem<ConfigStorage>('config');
 
     if (!savedConfig || typeof savedConfig === 'string') {
@@ -52,15 +51,11 @@ export const Config = ({ textColor, bgColor, textSeparator, mainTextMaxLength, o
     const { input: textColorInput } = useInput({ value: textColor || savedConfig.textColor });
     const { input: bgColorInput } = useInput({ value: bgColor || savedConfig.bgColor });
     const { input: textSeparatorInput } = useInput({ value: textSeparator || savedConfig.textSeparator });
-    const { input: mainTextMaxLengthInput } = useInput<number>({
-        value: getNumber(mainTextMaxLength || savedConfig.mainTextMaxLength)
-    });
 
     const textColorError = !textColorInput.value;
     const bgColorError = !bgColorInput.value;
     const textSeparatorError = !textSeparatorInput.value;
-    const mainTextMaxLengthError = !mainTextMaxLengthInput.value;
-    const invalidForm = textColorError || bgColorError || textSeparatorError || mainTextMaxLengthError;
+    const invalidForm = textColorError || bgColorError || textSeparatorError;
 
     const onSaveConfig = () => {
         if (invalidForm) {
@@ -70,8 +65,7 @@ export const Config = ({ textColor, bgColor, textSeparator, mainTextMaxLength, o
         const newConfig: ConfigStorage = {
             textColor: textColorInput.value || '',
             bgColor: bgColorInput.value || '',
-            textSeparator: textSeparatorInput.value || '',
-            mainTextMaxLength: getNumber(mainTextMaxLengthInput.value)
+            textSeparator: textSeparatorInput.value || ''
         };
         appStorage.setItem('config', newConfig);
         onDone?.(newConfig);
@@ -86,11 +80,8 @@ export const Config = ({ textColor, bgColor, textSeparator, mainTextMaxLength, o
                 <FormControl label="Background color:" error={bgColorError}>
                     <TextInput type="color" {...bgColorInput} />
                 </FormControl>
-                <FormControl label="Symbol for separating text:" error={textSeparatorError}>
+                <FormControl label="Symbol for text separating:" error={textSeparatorError}>
                     <TextInput maxLength={10} {...textSeparatorInput} />
-                </FormControl>
-                <FormControl label="Maximum characters for main text:" error={mainTextMaxLengthError}>
-                    <TextInput type="number" min="0" max="10000" step="1" {...mainTextMaxLengthInput} />
                 </FormControl>
             </FormGroup>
             <Actions>
