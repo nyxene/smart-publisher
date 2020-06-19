@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { useInput } from '~core/form/useInput';
+import { useInput } from '~/core/form/useInput';
 
 import { Post } from './Post';
-import { UsePostConfig } from './types';
+import { UsePostConfig, UsePostOutput } from './types';
 
 export const usePost = ({
     value: postValue = '',
@@ -11,17 +11,7 @@ export const usePost = ({
     placeholder,
     disabled = false,
     textSeparator
-}: UsePostConfig = {}): [
-    React.ReactElement,
-    {
-        value: string;
-        setPost: (post: string) => void;
-        disabledPost: boolean;
-        setDisabledPost: (value: boolean) => void;
-        clearPost: () => void;
-        copyToClipboard: () => void;
-    }
-] => {
+}: UsePostConfig = {}): [React.ReactElement, UsePostOutput] => {
     const postRef = React.useRef<HTMLTextAreaElement | null>(null);
 
     const {

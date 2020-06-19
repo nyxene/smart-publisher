@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Text, TEXT_COLOR, TEXT_SIZE } from '~components';
-import { MAIN_TEXT_MAX_LENGTH } from '~core/constants';
+import { Text, TEXT_COLOR, TEXT_SIZE } from '~/components';
+import { MAIN_TEXT_MAX_LENGTH } from '~/core/constants';
 
 import { CounterProps } from './types';
 

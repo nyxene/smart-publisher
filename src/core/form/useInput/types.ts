@@ -9,17 +9,17 @@ export interface UseInputProps<TValue> {
 
 export interface UseInputOutput<TValue> {
     value?: TValue;
-    setValue: (value?: TValue) => void;
+    setValue(value?: TValue): void;
     disabled: boolean;
-    setDisabled: (value: boolean) => void;
+    setDisabled(value: boolean): void;
     readonly: boolean;
-    setReadonly: (value: boolean) => void;
-    onChange: <TChangeEvent = React.ChangeEvent<HTMLInputElement>>(e: TChangeEvent) => void;
-    clear: () => void;
+    setReadonly(value: boolean): void;
+    onChange<TChangeEvent = React.ChangeEvent<HTMLInputElement>>(e: TChangeEvent): void;
+    clear(): void;
     input: {
         value?: TValue;
         disabled: boolean;
         readOnly: boolean;
-        onChange: <TChangeEvent = React.ChangeEvent<HTMLInputElement>>(e: TChangeEvent) => void;
+        onChange<TChangeEvent = React.ChangeEvent<HTMLInputElement>>(e: TChangeEvent): void;
     };
 }

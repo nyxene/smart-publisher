@@ -29,6 +29,10 @@ export class Storage implements AppStorage {
         }
     }
 
+    public removeItem(name: string): void {
+        this.storage.removeItem(name);
+    }
+
     public clear(): void {
         this.storage.clear();
     }

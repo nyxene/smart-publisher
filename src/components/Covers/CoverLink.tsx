@@ -1,11 +1,13 @@
 import styled, { css } from 'styled-components';
 
-import { Theme } from '~theme';
+import { Theme } from '~/theme';
 
 export const CoverLink = styled.a<{ theme: Theme }>`
     ${({ theme }) => css`
         position: relative;
-        flex-grow: 1;
+        width: ${theme.sizes.xxxl};
+        height: ${theme.sizes.xxxl};
+        flex-grow: 0;
         display: block;
         border-width: ${theme.borders.widths.thin};
         border-color: ${theme.colors.white};

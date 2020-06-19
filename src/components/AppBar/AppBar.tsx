@@ -1,10 +1,11 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { getKey } from '~core/helpers';
+import { getKey } from '~/core/helpers';
 import { Theme } from '~/theme';
 
 import { getAppBarControl } from './controls';
+import { AppBarFill } from './controls/AppBarFill';
 import { AppBarProps } from './types';
 
 const Root = styled.div<{ theme: Theme }>`
@@ -22,6 +23,10 @@ const Root = styled.div<{ theme: Theme }>`
             border-left-width: ${theme.borders.widths.base};
             border-left-color: ${theme.colors.white};
             border-style: solid;
+        }
+
+        > ${AppBarFill} {
+            border: 0;
         }
     `};
 `;

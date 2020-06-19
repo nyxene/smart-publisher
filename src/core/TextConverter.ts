@@ -1,6 +1,6 @@
 import Typograf from 'typograf';
 
-import { TextToPng, TextToPngConfig } from './TextToPng';
+import { RATIO, TextToPng, TextToPngConfig } from './TextToPng';
 
 export interface SeparateConditionResult {
     mainText: string;
@@ -15,6 +15,7 @@ interface RunResult {
 
 interface TextConverterManager {
     run(originalText: string): RunResult;
+    format(originalText: string): string;
     prepare(originalText: string): SeparateConditionResult;
 }
 
@@ -24,10 +25,12 @@ export class TextConverter implements TextConverterManager {
     public constructor(
         private readonly textColor: string,
         private readonly bgColor: string,
+        private readonly ratio?: RATIO,
         private readonly separateCondition?: SeparateCondition
     ) {
         this.textColor = textColor;
         this.bgColor = bgColor;
+        this.ratio = ratio;
         this.separateCondition = separateCondition;
 
         this.typograf = new Typograf({ locale: ['ru', 'en-US'] });
@@ -38,7 +41,8 @@ export class TextConverter implements TextConverterManager {
         const { mainText, otherText } = this.prepare(originalText);
         const options: TextToPngConfig = {
             textColor: this.textColor,
-            bgColor: this.bgColor
+            bgColor: this.bgColor,
+            ratio: this.ratio
         };
 
         let covers: string[] = [];
@@ -49,6 +53,11 @@ export class TextConverter implements TextConverterManager {
         }
 
         return { mainText, covers };
+    }
+
+    public format(originalText: string): string {
+        const formattedText = this.typograf.execute(originalText);
+        return formattedText.trim();
     }
 
     public prepare(originalText: string): SeparateConditionResult {

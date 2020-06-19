@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
-import { Theme } from '~theme';
+
+import { Theme } from '~/theme';
 
 export const TextareaInput = styled.textarea<{ theme: Theme }>`
     ${({ theme }) => css`

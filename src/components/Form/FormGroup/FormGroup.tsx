@@ -1,8 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { clearProps } from '~core/helpers';
-import { Theme } from '~theme';
+import { clearProps } from '~/core/helpers';
+import { Theme } from '~/theme';
 
 import { FormGroupProps } from './types';
 

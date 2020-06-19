@@ -1,10 +1,10 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { Counter, FormControl, TextareaInput } from '~components';
-import { MAIN_TEXT_MAX_LENGTH, TEXT_SEPARATOR } from '~core/constants';
-import { useDebounce } from '~core/hooks';
-import { Theme } from '~theme';
+import { FormControl, TextareaInput } from '~/components';
+import { TEXT_SEPARATOR } from '~/core/constants';
+import { useDebounce } from '~/core/hooks';
+import { Theme } from '~/theme';
 
 import { PostProps } from './types';
 

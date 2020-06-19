@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { Theme } from '~theme';
+import { Theme } from '~/theme';
 
 import { LoggedIn } from './LoggedIn';
 
@@ -21,9 +21,8 @@ Root.displayName = 'AppShellRoot';
 const Content = styled.div<{ theme: Theme }>`
     ${({ theme }) => css`
         width: 100%;
-        max-width: 1024px;
+        max-width: 964px;
         height: 100%;
-        overflow-x: auto;
         border-width: ${theme.borders.widths.base};
         border-color: ${theme.colors.white};
         border-style: solid;

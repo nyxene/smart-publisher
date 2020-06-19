@@ -4,6 +4,12 @@ export enum TEXT_ALIGN {
     RIGHT = 'right'
 }
 
+export enum RATIO {
+    portrait = 'portrait',
+    square = 'square',
+    landscape = 'landscape'
+}
+
 export interface TextToPngConfig {
     font?: string;
     textColor?: string;
@@ -12,16 +18,16 @@ export interface TextToPngConfig {
     padding?: number;
     borderWidth?: number;
     borderColor?: string;
+    ratio?: RATIO;
 }
 
-const SIZE_WIDTH = 1080;
-const SIZE_HEIGHT = SIZE_WIDTH * 1.25;
+const PORTRAIT_SIZE = [1080, 1350];
+const SQUARE_SIZE = [1080, 1080];
+const LANDSCAPE_SIZE = [1080, 608];
 const FONT_SIZE = 44;
 const LINE_HEIGHT = FONT_SIZE * 1.4;
 const FONT_FAMILY = 'Premiera, Cambria, Roboto Slab, Georgia, Times New Roman, serif';
 const FONT_DEFAULT = `normal ${FONT_SIZE}px ${FONT_FAMILY}`;
-
-const MAX_LINE = 20;
 
 const createCanvas = (width: number, height: number): HTMLCanvasElement => {
     const canvas = document.createElement('canvas');
@@ -38,6 +44,7 @@ export class TextToPng {
     private readonly padding: number;
     private readonly borderWidth: number;
     private readonly borderColor: string;
+    private readonly ratio: RATIO;
 
     public constructor({
         font = FONT_DEFAULT,
@@ -46,7 +53,8 @@ export class TextToPng {
         bgColor = 'white',
         padding = 40,
         borderWidth = 0,
-        borderColor = 'black'
+        borderColor = 'black',
+        ratio = RATIO.portrait
     }: TextToPngConfig = {}) {
         this.font = font;
         this.textColor = textColor;
@@ -55,20 +63,20 @@ export class TextToPng {
         this.padding = Number(padding);
         this.borderWidth = Number(borderWidth);
         this.borderColor = borderColor;
+        this.ratio = ratio;
     }
 
     public render(text: string): string[] {
         const textBlocks = this.getTextBlocks(text);
 
         return textBlocks.map((textBlock: string[]): string => {
-            const canvas = createCanvas(SIZE_WIDTH, SIZE_HEIGHT);
-            const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
+            const { canvas, ctx } = this.getCanvas();
 
             if (!ctx) {
                 return '';
             }
 
-            let textY = this.padding;
+            let textY = this.ratio !== RATIO.square ? this.padding : this.padding / 2;
 
             ctx.globalAlpha = 1;
             ctx.fillStyle = this.bgColor;
@@ -87,13 +95,13 @@ export class TextToPng {
     }
 
     private getTextBlocks(text: string): string[][] {
-        const canvas = createCanvas(SIZE_WIDTH, SIZE_HEIGHT);
-        const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
+        const { canvas, ctx } = this.getCanvas();
 
         if (!ctx) {
             return [];
         }
 
+        const maxLine = this.getMaxLine();
         const textX = 0;
         let textY = 0;
 
@@ -124,7 +132,7 @@ export class TextToPng {
             const testLine = line + word + ' ';
             const testLineWidth = ctx.measureText(testLine).width;
 
-            if (addNewLines.indexOf(n) > -1 || (testLineWidth > SIZE_WIDTH - this.padding * 2 && n > 0)) {
+            if (addNewLines.indexOf(n) > -1 || (testLineWidth > this.getWidthCover() - this.padding * 2 && n > 0)) {
                 ctx.fillText(line, textX, textY);
 
                 if (!textBlocks[count]) {
@@ -133,7 +141,7 @@ export class TextToPng {
 
                 textBlocks[count].push(line);
 
-                if (textBlocks[count].length > MAX_LINE) {
+                if (textBlocks[count].length > maxLine) {
                     count++;
                 }
 
@@ -152,4 +160,39 @@ export class TextToPng {
 
         return textBlocks;
     }
+
+    private getCanvas = (): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D | null } => {
+        const canvas = createCanvas(this.getWidthCover(), this.getHeightCover());
+        const ctx = canvas.getContext('2d');
+
+        return { canvas, ctx };
+    };
+
+    private getWidthCover = (): number => {
+        return this.getCoverSize(this.ratio)[0];
+    };
+
+    private getHeightCover = (): number => {
+        return this.getCoverSize(this.ratio)[1];
+    };
+
+    private getCoverSize = (ratio: RATIO): number[] => {
+        switch (ratio) {
+            case RATIO.landscape:
+                return LANDSCAPE_SIZE;
+            case RATIO.square:
+                return SQUARE_SIZE;
+            case RATIO.portrait:
+            default:
+                return PORTRAIT_SIZE;
+        }
+    };
+
+    private getMaxLine = (): number => {
+        const heightCover = this.getHeightCover();
+        const indent = (this.padding + this.borderWidth) * 2;
+        const heightTextArea = heightCover - indent;
+
+        return Math.floor(heightTextArea / LINE_HEIGHT);
+    };
 }
