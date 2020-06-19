@@ -1,9 +1,9 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { FromLabel } from '~components';
-import { clearProps } from '~core/helpers';
-import { Theme } from '~theme';
+import { FromLabel } from '~/components';
+import { clearProps } from '~/core/helpers';
+import { Theme } from '~/theme';
 
 import { FormControlProps } from './types';
 

@@ -1,11 +1,10 @@
 import styled, { css } from 'styled-components';
 
-import { Theme } from '~theme';
+import { Theme } from '~/theme';
 
 export const CoverImage = styled.div<{ theme: Theme; dataImage: string }>`
     ${({ theme, dataImage }) => css`
-        min-width: ${theme.sizes.xl};
-        width: auto;
+        width: ${theme.sizes.xxxl};
         height: ${theme.sizes.xxxl};
 
         background-color: transparent;

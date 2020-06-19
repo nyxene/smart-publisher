@@ -1,4 +1,4 @@
-import { GENERAL, GRAY, GREEN, ORANGE, RED, YELLOW } from '~theme/colors';
+import { GENERAL, GRAY, GREEN, ORANGE, RED, YELLOW } from '~/theme/colors';
 
 import { Theme } from './types';
 

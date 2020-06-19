@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { Theme } from '~theme';
+import { Theme } from '~/theme';
 
 export const TextInput = styled.input<React.HTMLAttributes<HTMLInputElement> & { theme: Theme }>`
     ${({ theme }) => css`

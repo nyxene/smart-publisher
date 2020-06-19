@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface FormControlProps extends React.HTMLAttributes<HTMLDivElement> {
-    children: React.ReactElement;
+    children: React.ReactChild;
     label?: React.ReactElement | string;
     inline?: boolean;
     error?: boolean;

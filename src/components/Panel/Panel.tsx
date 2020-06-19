@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { Theme } from '~theme';
+import { Theme } from '~/theme';
 
 export const Panel = styled.div<{ theme: Theme }>`
     ${({ theme }) => css`

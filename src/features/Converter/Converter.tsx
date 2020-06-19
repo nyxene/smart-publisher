@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import configIconSrc from '~/assets/icons/config.svg';
 import closeIconSrc from '~/assets/icons/close.svg';
 import { APP_BAR_BUTTON_UI, APP_BAR_CONTROL_TYPE, AppBar, CoverItemProps, Covers, usePost } from '~/components';
-import { INITIAL_APP_CONFIG } from '~core/constants';
-import { TextConverter } from '~core/TextConverter';
-import { Config, ConfigStorage } from '~features/Config';
-import { appStorage } from '~core/storage';
+import { INITIAL_APP_CONFIG } from '~/core/constants';
+import { isMobile } from '~/core/helpers';
+import { appStorage } from '~/core/storage';
+import { TextConverter } from '~/core/TextConverter';
+import { Config, ConfigStorage } from '~/features/Config';
 
 import { separateCondition } from './helpers';
 
@@ -56,17 +57,37 @@ export const Converter = () => {
         setDisabledPost(false);
     };
 
+    const getConverter = () => {
+        return new TextConverter(
+            config.textColor,
+            config.bgColor,
+            config.ratio,
+            separateCondition(config.textSeparator)
+        );
+    };
+
+    const onFormatPost = () => {
+        if (!post.length) {
+            return;
+        }
+
+        try {
+            const converter = getConverter();
+            const formattedPost = converter.format(post);
+
+            setPost(formattedPost);
+        } catch (e) {
+            console.log('Text Converter error', e);
+        }
+    };
+
     const onConvertPost = () => {
         if (!post.length) {
             return;
         }
 
         try {
-            const converter = new TextConverter(
-                config.textColor,
-                config.bgColor,
-                separateCondition(config.textSeparator)
-            );
+            const converter = getConverter();
             const { mainText: convertedPost, covers } = converter.run(post);
 
             const newCovers =
@@ -113,22 +134,22 @@ export const Converter = () => {
             <AppBar
                 items={[
                     {
-                        type: APP_BAR_CONTROL_TYPE.brandLink,
-                        text: 'SP',
-                        onClick: () => {
-                            location.reload();
-                        }
-                    },
-                    {
-                        type: APP_BAR_CONTROL_TYPE.fill
-                    },
-                    {
                         type: APP_BAR_CONTROL_TYPE.button,
                         ui: showConfig ? APP_BAR_BUTTON_UI.secondary : APP_BAR_BUTTON_UI.neutral,
                         icon: showConfig ? closeIconSrc : configIconSrc,
                         onClick: () => {
                             onToggleConfig();
                         }
+                    },
+                    {
+                        type: APP_BAR_CONTROL_TYPE.brandLink,
+                        text: isMobile() ? 'SP' : '🧠 Smart Publisher',
+                        onClick: () => {
+                            location.reload();
+                        }
+                    },
+                    {
+                        type: APP_BAR_CONTROL_TYPE.fill
                     },
                     {
                         type: APP_BAR_CONTROL_TYPE.button,
@@ -140,8 +161,18 @@ export const Converter = () => {
                     },
                     {
                         type: APP_BAR_CONTROL_TYPE.button,
+                        ui: APP_BAR_BUTTON_UI.neutral,
+                        text: 'Format',
+                        hidden: !post || converted,
+                        disabled: !post.length,
+                        onClick: () => {
+                            onFormatPost();
+                        }
+                    },
+                    {
+                        type: APP_BAR_CONTROL_TYPE.button,
                         text: 'Convert',
-                        hidden: converted,
+                        hidden: !post || converted,
                         disabled: !post.length,
                         onClick: () => {
                             onConvertPost();

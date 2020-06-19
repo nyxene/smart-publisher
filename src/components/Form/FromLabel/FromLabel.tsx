@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Panel, Text, TEXT_COLOR, TEXT_SIZE, TEXT_TRANSFORM, TEXT_WHITE_SPACE } from '~components';
+import { Panel, Text, TEXT_COLOR, TEXT_SIZE, TEXT_TRANSFORM, TEXT_WHITE_SPACE } from '~/components';
 
 import { FromLabelProps } from './types';
 

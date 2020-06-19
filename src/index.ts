@@ -4,7 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 
 import { resetStyle } from '~/core/resetStyle';
 import { isMobile } from '~/core/helpers';
-import { AppRoot } from '~/main/AppRoot';
+import { AppRoot } from '~/AppRoot';
 import { createTheme } from '~/theme';
 
 const { font } = createTheme();

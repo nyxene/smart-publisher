@@ -1,9 +1,9 @@
-export const GENERAL = {
+export const GENERAL = Object.freeze({
     BLACK: '#000000', // text color white
     WHITE: '#ffffff'
-};
+});
 
-export const GRAY = {
+export const GRAY = Object.freeze({
     N50: '#fafafa',
     L50: '#ffffff',
     D50: '#c7c7c7',
@@ -43,9 +43,9 @@ export const GRAY = {
     N900: '#212121', // text color white
     L900: '#484848', // text color white
     D900: '#000000' // text color white
-};
+});
 
-export const GREEN = {
+export const GREEN = Object.freeze({
     N50: '#e8f5e9',
     L50: '#ffffff',
     D50: '#b6c2b7',
@@ -101,9 +101,9 @@ export const GREEN = {
     A700: '#00c853',
     LA700: '#5efc82',
     DA700: '#009624'
-};
+});
 
-export const YELLOW = {
+export const YELLOW = Object.freeze({
     N50: '#fffde7',
     L50: '#ffffff',
     D50: '#cccab5',
@@ -159,9 +159,9 @@ export const YELLOW = {
     A700: '#ffd600',
     LA700: '#ffff52',
     DA700: '#c7a500'
-};
+});
 
-export const ORANGE = {
+export const ORANGE = Object.freeze({
     N50: '#fff3e0',
     L50: '#ffffff',
     D50: '#ccc0ae',
@@ -217,9 +217,9 @@ export const ORANGE = {
     A700: '#ff6d00',
     LA700: '#ff9e40',
     DA700: '#c43c00' // text color white
-};
+});
 
-export const RED = {
+export const RED = Object.freeze({
     N50: '#ffebee',
     L50: '#ffffff',
     D50: '#ccb9bc',
@@ -275,4 +275,4 @@ export const RED = {
     A700: '#d50000', // text color white
     LA700: '#ff5131',
     DA700: '#9b0000' // text color white
-};
+});
